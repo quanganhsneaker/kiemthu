@@ -1,0 +1,390 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+:root {
+    --main-bg-colour: #414e66;
+    --sub-bg-colour: #f2f7fb;
+    --top-height: 70px;
+    --main-transition: all 0.4s;
+    --colour-hover-text: whitesmoke;
+    --main-boder-radius: 10px;
+    --main-font-family: "Open Sans", system-ui;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--main-font-family);
+}
+a {
+    text-decoration: none;
+    color: unset;
+}
+li {
+    list-style: none;
+}
+.row-grid {
+    display: grid;
+    justify-content: space-between;
+}
+.flex-box {
+    display: flex;
+}
+.main-btn {
+    padding: 10px 12px;
+    background-color: black;
+    color: whitesmoke;
+    border: none;
+    cursor: pointer;
+}
+.edit-class {
+    padding: 3px;
+    background-color: black;
+    color: white;
+    border-radius: var(--main-boder-radius);
+}
+.confirm-oder {
+    padding: 3px;
+    background-color: green;
+    color: white;
+    border-radius: var(--main-boder-radius);
+}
+.non-confirm-oder,
+.delete-class {
+    padding: 3px;
+    background-color: palevioletred;
+    color: white;
+    border-radius: var(--main-boder-radius);
+}
+/* main-admin */
+.admin .row-grid {
+    grid-template-columns: 20% 80%;
+}
+
+/* sidebar */
+.admin-sidebar {
+    height: 100vw;
+    background-color: #3c3c3c;
+}
+.admin-side-bar-top {
+    text-align: center;
+    height: var(--top-height);
+    border-bottom: 1px solid gray;
+}
+.admin-side-bar-top img {
+    width: 70px;
+}
+.admin-sidebar-content ul > li > a {
+    width: 100%;
+    display: block;
+    display: flex;
+    justify-content: flex-start;
+}
+.admin-sidebar-content ul > li > a i:last-child {
+    margin-left: auto;
+}
+.admin-sidebar-content ul li a i {
+    margin-right: 6px;
+}
+.admin-sidebar-content {
+    padding: 30px 0 0 30px;
+    color: whitesmoke;
+}
+.admin-sidebar-content ul li {
+    padding: 6px;
+    transition: var(--main-transition);
+}
+.admin-sidebar-content ul li:hover {
+    background-color: black;
+}
+.sub-menu {
+    height: 0;
+    overflow: hidden;
+    transition: var(--main-transition);
+}
+
+/* .sub-menu.active{
+    height: 65px;
+} */
+.sub-menu li:hover a {
+    color: crimson;
+}
+/* content */
+.admin-content {
+    background-color: var(--sub-bg-colour);
+}
+.admin-content-top {
+    display: flex;
+    justify-content: space-between;
+    height: var(--top-height);
+    border-bottom: 1px solid gray;
+    padding: 0 20px;
+}
+.admin-content-top .flex-box {
+    height: 70px;
+    align-items: center;
+}
+.admin-content-top i {
+    margin-right: 12px;
+    cursor: pointer;
+}
+.admin-content-top-right ul li:last-child p {
+    cursor: pointer;
+}
+
+.admin-content-top-right ul li .ri-notification-4-line {
+    position: relative;
+}
+.admin-content-top-right ul li .ri-notification-4-line::after {
+    position: absolute;
+    content: attr(number);
+    height: 18px;
+    width: 18px;
+    z-index: 1;
+    display: flex;
+    background-color: cadetblue;
+    border-radius: 50%;
+    top: -13px;
+    right: -9px;
+    justify-content: center;
+    align-items: center;
+    font-size: small;
+    color: #f2f7fb;
+    animation: notification;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-delay: 1s;
+}
+.ri-message-2-line {
+    position: relative;
+}
+.ri-message-2-line::after {
+    position: absolute;
+    content: "5";
+    height: 18px;
+    width: 18px;
+    z-index: 1;
+    display: flex;
+    color: #f2f7fb;
+    background-color: brown;
+    border-radius: 50%;
+    top: -13px;
+    right: -9px;
+    justify-content: center;
+    align-items: center;
+    font-size: small;
+    animation: notification;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-delay: 1s;
+}
+@keyframes notification {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+.admin-content-main-title h1 {
+    padding: 12px;
+    font-weight: 500;
+    position: relative;
+}
+.admin-content-main-title h1::before {
+    position: absolute;
+    display: block;
+    content: "";
+    height: 4px;
+    width: 100px;
+    background-color: var(--main-bg-colour);
+    bottom: -6px;
+    left: 12px;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.admin-content-main-content {
+    background-color: whitesmoke;
+}
+/* admin-content */
+
+.admin-content-main-content-product-add {
+    display: grid;
+    grid-template-columns: 70% 30%;
+    padding: 12px;
+    column-gap: 20px;
+}
+.admin-content-main-content-left input {
+    height: 40px;
+    border: none;
+    background-color: white;
+    margin-bottom: 20px;
+    outline: none;
+    border-radius: var(--main-boder-radius);
+    padding-left: 6px;
+}
+.admin-content-main-content-two-input {
+    display: flex;
+    justify-content: space-between;
+}
+.admin-content-main-content-two-input input {
+    width: 43%;
+}
+.admin-content-main-content-left textarea {
+    height: 200px;
+    width: 100%;
+    margin-bottom: 20px;
+    outline: none;
+    padding: 16px;
+    border: none;
+}
+.admin-content-main-content-right-imgage input {
+    display: none;
+}
+.admin-content-main-content-right-imgages input {
+    display: none;
+}
+.admin-content-main-content-right label {
+    padding: 6px 12px;
+    background-color: black;
+    color: whitesmoke;
+    cursor: pointer;
+    display: inline-block;
+}
+.image-show,
+.images-show {
+    min-height: 150px;
+}
+/* product-list */
+.admin-content-main-content-prouct-list {
+    margin-top: 20px;
+}
+.admin-content-main-content-prouct-list table {
+    width: 100%;
+    padding: 12px 0;
+    border-collapse: collapse;
+}
+
+.admin-content-main-content-prouct-list table,
+th,
+td {
+    padding: 10px;
+    text-align: center;
+}
+.admin-content-main-content-prouct-list table th {
+    background-color: black;
+    color: whitesmoke;
+    padding: 6px 0;
+}
+/* oder-list */
+.admin-content-main-content-oder-list {
+    margin-top: 20px;
+}
+.admin-content-main-content-oder-list table {
+    width: 100%;
+    padding: 12px 0;
+    border-collapse: collapse;
+}
+.admin-content-main-content-oder-list table tbody tr td a {
+    display: inline-flex;
+}
+
+.admin-content-main-content-oder-list table th td {
+    text-align: center;
+}
+.admin-content-main-content-oder-list table th {
+    background-color: black;
+    color: whitesmoke;
+    padding: 1px 0;
+}
+/*  boor sung khi lam backend */
+#input-file-img,
+#input-file-imgs {
+    padding: 12px;
+}
+#input-file-img img {
+    width: 100px;
+}
+#input-file-imgs img {
+    width: 100px;
+    margin: 10px;
+}
+/* css nút thêm sản phẩm phân loại */
+/* Phong cách chung cho phân loại sản phẩm */
+select[name="category"] {
+    background-color: #fff;
+    color: gray;
+    border: 1px solid #666;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+select[name="category"] option {
+    background-color: #fff;
+    color: gray;
+}
+
+/* Hiệu ứng khi hover vào select */
+select[name="category"]:hover {
+  
+    border-color: gray;
+}
+
+/* Hiệu ứng khi chọn */
+select[name="category"]:focus {
+    outline: none;
+  
+    border-color: #fff;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+/* css phần product list cho thẳng hàng */
+.admin-content-main-content-prouct-list table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+
+.admin-content-main-content-prouct-list table td {
+    height: 90px;
+    text-align: center;
+    vertical-align: middle;
+    padding: 8px;
+}
+
+.admin-content-main-content-prouct-list table th:nth-child(2), 
+.admin-content-main-content-prouct-list table td:nth-child(2) {
+    width: 200px; /* Ảnh */
+}
+.admin-content-main-content-prouct-list table th:first-child, 
+.admin-content-main-content-prouct-list table td:first-child {
+    width: 50px; 
+}
+
+.admin-content-main-content-prouct-list table th:nth-child(3), 
+.admin-content-main-content-prouct-list table td:nth-child(3) {
+    width: 300px; /* Tên sản phẩm */
+}
+
+.admin-content-main-content-prouct-list table th:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)),
+.admin-content-main-content-prouct-list table td:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)) {
+    width: 200px; /* Các cột khác */
+}
+
+.admin-content-main-content-prouct-list table th {
+    background-color: black;
+    color: whitesmoke;
+}
+
+.admin-content-main-content-prouct-list table img {
+    width: 150px;
+    height: 90px;
+    object-fit: cover;
+}
+.admin-content-main-content-prouct-list table td:nth-child(2) img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ảnh chiếm trọn ô */
+}
