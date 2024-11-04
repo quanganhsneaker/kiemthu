@@ -1,7 +1,7 @@
 @extends('admin.main')
 @section('content')
-<div class="admin-content-main-content-oder-list">
-                            <table>
+<div class="user-statistics">
+                            <table class="abc123">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -26,7 +26,7 @@
                                         <td>{{$order -> address}},{{$order -> city}}, {{$order -> district}},{{$order -> ward}}</td>
                                         <td>{{$order -> note}}</td>
                                         
-                                        <td> <a class="edit-class" href="/admin/oder/details/{{$order -> order_detail}}">Chi tiết</a></td>
+                                        <td> <a class="edit-class" href="/admin/oder/details/{{$order -> order_detail}}">Details</a></td>
                                         <td>{{$order -> created_at}}</td>
                                         <td>
     @if($order->status === 'Đã xác nhận')

@@ -5,15 +5,18 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
-
+use Carbon\Carbon;
 class orderController extends Controller
 {
     //
     public function list_order(){
         $orders = Order::all();
+        $title ='Danh sách đơn hàng';
         return view("admin.order.list",[
-            'orders' => $orders
+            'orders' => $orders,
+            'title' => 'Danh sách đơn hàng',
         ]);
         
     }
@@ -42,6 +45,116 @@ public function confirm_order($id)
 
     return redirect()->route('order.list')->with('success', 'Đơn hàng đã được xác nhận!');
 }
+public function revenueStatistics()
+{
+    $title = 'Thống kê doanh thu';
+    // Lấy ngày đầu tiên và ngày cuối cùng của tuần này
+    $startOfWeek = Carbon::now()->startOfWeek();
+    $endOfWeek = Carbon::now()->endOfWeek();
 
+    // Lấy ngày đầu tiên và ngày cuối cùng của tuần trước
+    $startOfLastWeek = Carbon::now()->subWeek()->startOfWeek();
+    $endOfLastWeek = Carbon::now()->subWeek()->endOfWeek();
 
+    // Lấy các đơn hàng trong tuần này và tuần trước
+    $ordersThisWeek = Order::whereBetween('created_at', [$startOfWeek, $endOfWeek])->get();
+    $ordersLastWeek = Order::whereBetween('created_at', [$startOfLastWeek, $endOfLastWeek])->get();
+
+    // Tính doanh thu tuần này
+    $revenueThisWeek = $this->calculateRevenue($ordersThisWeek);
+
+    // Tính doanh thu tuần trước
+    $revenueLastWeek = $this->calculateRevenue($ordersLastWeek);
+
+    // Tạo dữ liệu cho biểu đồ
+    $labels = ['Tuần này', 'Tuần trước'];
+    $revenues = [$revenueThisWeek, $revenueLastWeek];
+
+    return view('admin.statistics.revenue', [
+           'title' => 'Doanh thu',
+        'revenues' => json_encode($revenues),
+        'labels' => json_encode($labels),
+        'revenueThisWeek' => $revenueThisWeek, // Truyền biến này
+        'revenueLastWeek' => $revenueLastWeek  // Truyền biến này
+    ]);
+}
+
+private function calculateRevenue($orders)
+{
+    $totalRevenue = 0;
+
+    foreach ($orders as $order) {
+        // Giải mã chi tiết đơn hàng
+        $orderDetails = json_decode($order->order_detail, true);
+
+        if (is_array($orderDetails)) {
+            foreach ($orderDetails as $productId => $quantity) {
+                // Tìm sản phẩm theo ID
+                $product = Product::find($productId);
+
+                if ($product) {
+                    // Tính thành tiền và cộng vào tổng doanh thu
+                    $totalRevenue += $product->price_nomal * $quantity;
+                }
+            }
+        }
+    }
+
+    return $totalRevenue;
+}
+
+    //  thống kê đơn hàng
+    public function orderStatistics()
+    {
+        $title ="Thống kê đơn hàng";
+        // Lấy tổng số đơn hàng
+        $totalOrders = Order::count();
+    
+        // Lấy số đơn hàng đang chờ xử lý (giả sử status = 0 là đang chờ)
+        $pendingOrders = Order::where('status', '0')->count(); // Sử dụng '0' cho giá trị string
+    
+        // Tính số đơn hàng đã xác nhận
+        $processedOrders = $totalOrders - $pendingOrders; // Tổng đơn hàng - Đơn hàng đang chờ
+    
+        return view('admin.statistics.orders', [
+            'title' => 'Thống kê đơn hàng',
+            'totalOrders' => $totalOrders,
+            'processedOrders' => $processedOrders,
+            'pendingOrders' => $pendingOrders
+        ]);
+    }
+    
+    public function userStatistics()
+    {
+        $title = "Thống kê người dùng";
+    
+        // Lấy danh sách người dùng
+        $users = User::select('id', 'name', 'email', 'created_at')->get(); // Chỉ lấy các cột cần thiết
+    
+        // Tính tổng số người dùng
+        $totalUsers = $users->count(); // Đếm tổng số người dùng
+    
+        return view('admin.statistics.users', [
+            'title' => $title,
+            'users' => $users, // Gửi danh sách người dùng vào view
+            'totalUsers' => $totalUsers // Gửi tổng số người dùng vào view
+        ]);
+    }
+    
+    public function dashboard()
+    {
+        // Tính tổng doanh thu từ bảng đơn hàng
+        $totalOrders = Order::count(); // Tổng số đơn hàng
+        $orders = Order::all(); // Lấy tất cả các đơn hàng để tính doanh thu
+        $totalRevenue = $this->calculateRevenue($orders); // Gọi hàm calculateRevenue để tính doanh thu
+        $totalUsers = User::count(); // Đếm tổng số người dùng
+        // Trả về view cùng với biến tổng doanh thu
+        return view('admin.dashboard', [
+            'totalOrders' => $totalOrders,
+            'totalRevenue' => $totalRevenue, // Truyền tổng doanh thu vào view
+            'totalUsers' => $totalUsers, // Truyền tổng số người dùng vào view
+        ]);
+    }
+    
+    
 }

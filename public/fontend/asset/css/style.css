@@ -104,13 +104,17 @@ a {
 header.active {
     background-color: var(--main-bg);
 }
-header {
+#header {
     height: var(--header-height);
     border-bottom: 1px solid #ddd;
     position: fixed;
     z-index: 1;
-    width: 100%;
+    z-index: 1000;
     transition: var(--main-transition);
+    position: fixed; /* Đặt header ở vị trí cố định */
+    top: 0; /* Đặt ở phía trên cùng */
+    left: 0; /* Căn trái */
+    width: 100%; /* Chiều rộng đầy đủ */
 }
 header .row-flex {
     align-items: center;
@@ -171,6 +175,10 @@ header .row-flex {
     text-align: center;
     font-size: small;
 }
+.header-cart {
+    padding: 0 50px;
+}
+
 /* slider========================= */
 .slider {
     height: 710px;
@@ -180,7 +188,6 @@ header .row-flex {
     position: relative;
 }
 .slider-items {
-    padding-top: 71px;
     position: relative;
     transition: var(--main-transition);
 }
@@ -253,7 +260,7 @@ header .row-flex {
 /* footer============ */
 footer {
     margin-top: 50px;
-
+    margin-bottom: 0;
     padding: 50px 0 0 50px;
     background-color: whitesmoke;
 }
@@ -754,7 +761,7 @@ header {
     border-radius: 20px;
     object-fit: cover;
 }
-/*  */
+/*  TÌM KIẾM*/
 /* Căn chỉnh và tạo bố cục cho phần tìm kiếm */
 .header-search {
     position: relative;
@@ -791,7 +798,7 @@ header {
     display: flex;
     align-items: center;
     padding: 10px;
-    
+
     transition: background-color 0.2s;
     cursor: pointer;
 }
@@ -811,14 +818,12 @@ header {
 
 /* Thông tin sản phẩm */
 .search-results .product-info {
-   
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
 .search-results .product-info span {
-   
     font-size: 14px;
     margin-bottom: 3px;
     color: #333;
@@ -828,6 +833,9 @@ header {
     font-weight: bold;
     color: #d9534f;
 }
-.title{
+.title {
     width: 200px;
+}
+body {
+    margin-top: 70px; /* Thêm padding cho body để tạo khoảng trống cho header */
 }

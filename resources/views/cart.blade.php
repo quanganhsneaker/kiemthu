@@ -1,14 +1,11 @@
 @extends('main')
 
 @section('content')
-<style>
-        .p-to-top {
-            padding-top: 71px;
-        }
-    </style>
+
     <!-- product-details -->
     <section class="cart-section p-to-top">
         <!-- Form cập nhật giỏ hàng -->
+        @if (Auth::check())
         <form action="/cart/send" method="post">
             <div class="container">
                 <div class="row-flex row-flex-product-detail">
@@ -128,6 +125,7 @@
                         });
                     });
                 </script>
+            @endif
             @endif
 
             @csrf

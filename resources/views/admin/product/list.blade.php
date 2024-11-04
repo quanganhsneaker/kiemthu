@@ -15,6 +15,7 @@
                 <th>Tuỳ Chỉnh</th>
             </tr>
         </thead>
+
         <tbody>
             @foreach ($hotProducts as $product)
             <tr>
@@ -127,7 +128,7 @@
         </tbody>
     </table>
 
-    <h2>Accessory</h2>
+    <h2>Phụ kiện bán chạy</h2>
     <table>
         <thead>
             <tr>

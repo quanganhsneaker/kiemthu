@@ -20,7 +20,7 @@
 
             <!-- Phần hiển thị sản phẩm theo danh mục -->
             @php
-         $categories = ['hot' => 'Sản Phẩm Bán Chạy','new' => 'Sản Phẩm Mới', 'dell' => 'DELL', 'macbook' => 'MACBOOK',  'acer' => 'ACER','accessory' => 'Phụ Kiện '];
+         $categories = ['hot' => 'Sản Phẩm Bán Chạy', 'dell' => 'DELL', 'macbook' => 'MACBOOK',  'acer' => 'ACER','accessory' => 'Phụ Kiện '];
             @endphp
 
             @foreach ($categories as $category => $title)

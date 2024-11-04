@@ -52,11 +52,15 @@
                                 </div>
                                 <span>{{ $product->material }}</span>
                                 <div class="product-item-price">
+                                 
+                                   
+                               
                                     <p>{{ number_format($product->price_nomal) }} <sup>đ</sup>
                                         <span>{{ number_format($product->price_sale) }}<sup>đ</sup></span>
                                     </p>
                                 </div>
                             </div>
+                         
                         @endif
                     @endforeach
                 </div>
@@ -64,6 +68,7 @@
 
         </div>
     </section>
+
 
     <!-- Footer -->
     @include('parts.footer')

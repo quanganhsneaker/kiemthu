@@ -328,14 +328,13 @@ select[name="category"] option {
 
 /* Hiệu ứng khi hover vào select */
 select[name="category"]:hover {
-  
     border-color: gray;
 }
 
 /* Hiệu ứng khi chọn */
 select[name="category"]:focus {
     outline: none;
-  
+
     border-color: #fff;
     box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
 }
@@ -346,7 +345,6 @@ select[name="category"]:focus {
     table-layout: fixed;
 }
 
-
 .admin-content-main-content-prouct-list table td {
     height: 90px;
     text-align: center;
@@ -354,22 +352,26 @@ select[name="category"]:focus {
     padding: 8px;
 }
 
-.admin-content-main-content-prouct-list table th:nth-child(2), 
+.admin-content-main-content-prouct-list table th:nth-child(2),
 .admin-content-main-content-prouct-list table td:nth-child(2) {
     width: 200px; /* Ảnh */
 }
-.admin-content-main-content-prouct-list table th:first-child, 
+.admin-content-main-content-prouct-list table th:first-child,
 .admin-content-main-content-prouct-list table td:first-child {
-    width: 50px; 
+    width: 50px;
 }
 
-.admin-content-main-content-prouct-list table th:nth-child(3), 
+.admin-content-main-content-prouct-list table th:nth-child(3),
 .admin-content-main-content-prouct-list table td:nth-child(3) {
     width: 300px; /* Tên sản phẩm */
 }
 
-.admin-content-main-content-prouct-list table th:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)),
-.admin-content-main-content-prouct-list table td:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)) {
+.admin-content-main-content-prouct-list
+    table
+    th:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)),
+.admin-content-main-content-prouct-list
+    table
+    td:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)) {
     width: 200px; /* Các cột khác */
 }
 
@@ -387,4 +389,46 @@ select[name="category"]:focus {
     width: 100%;
     height: 100%;
     object-fit: cover; /* Ảnh chiếm trọn ô */
+}
+/*  của bảng thống kê */
+.revenue-info {
+    font-weight: bold; /* Chữ bôi đậm */
+    background-color: whitesmoke; /* Màu nền xám đen */
+    color: gray; /* Màu chữ trắng */
+    padding: 15px; /* Khoảng cách bên trong */
+    border-radius: 5px; /* Bo góc */
+    border: #3c3c3c solid #3c3c3c;
+    margin-bottom: 10px; /* Khoảng cách giữa các đoạn */
+    font-size: 16px; /* Kích thước chữ */
+    text-align: left; /* Căn trái */
+}
+/*  thống kê user của admin */
+.user-statistics {
+    margin: 20px;
+    font-family: Arial, sans-serif; /* Thay đổi font chữ nếu cần */
+}
+
+.abc123 {
+    width: 100%;
+    border-collapse: collapse; /* Gộp các viền lại với nhau */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Thêm bóng cho bảng */
+}
+
+.abc123 th, .abc123 td {
+    border: 1px solid #ddd; /* Viền nhẹ cho các ô */
+    padding: 12px; /* Khoảng cách bên trong ô */
+    text-align: left; /* Canh trái cho nội dung */
+}
+
+.abc123 th {
+    background-color: black; /* Màu nền cho tiêu đề bảng */
+    color: whitesmoke; /* Màu chữ cho tiêu đề bảng */
+}
+
+.abc123 tr:hover {
+    background-color: #f1f1f1; /* Màu nền khi di chuột qua hàng */
+}
+
+.abc123 td {
+    vertical-align: middle; /* Căn giữa theo chiều dọc */
 }

@@ -18,8 +18,7 @@
                             <li><a href="/producttype">Sản Phẩm</a></li>
                             <li><a href="/contact">Liên Hệ</a></li>
                             <li><a href="/info">Thông Tin</a></li>
-                            <li><a href="/">Đăng Nhập </a></li>
-                            <li><a href="/">Đăng Ký</a></li>
+                 
                         </ul>
                     </nav>
                 </div>
@@ -48,9 +47,31 @@
         </script>
 
 
+              
+                
+                @if (Auth::check())
                 <div class="header-cart">
-                    <a href="/cart"><i class="ri-shopping-cart-line"number= "0"></i></a>
+                    <a href="{{route('show_cart')}}"><i class="ri-shopping-cart-line"number= "0"    > Giỏ Hàng</i></a>
+                  
                 </div>
+              
+                <div class="header-person">
+                    <a href="{{ route('my.orders') }}"><i class="ri-user-2-fill" style="font-size: 25px"></i>{{ Auth::user()->name }}</a>
+
+                </div>
+                <div class="header-logout">
+                    <a href="{{route('logout')}}"><i class="ri-logout-box-r-fill" style="font-size: 25px"></i></a>
+                </div>
+                @else
+                <div class="header-nav ">
+                    <nav>
+                        <ul>
+                <li><a href="{{route('logins')}}">Đăng Nhập </a></li>
+                <li><a href="{{route('register')}}">Đăng Ký</a> </li>
+            </ul>
+        </nav>
+    </div>
+                @endif
             </div>
         </div>
     </header>

@@ -5,15 +5,18 @@ namespace App\Http\Controllers;
 use App\Mail\TestMail;
 use App\Models\Order;
 use App\Models\Promotion;
+use App\Models\User;
 use App\Notifications\EmailNotification;
 use Arr;
 use Auth;
+use Hash;
 use Illuminate\Http\Request;
 use App\Models\product;
 use Illuminate\Support\Facades\Mail;
 use Notification;
 use Session;
 use Str;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 class FontendController extends Controller
 {
     public function index(){
@@ -65,16 +68,17 @@ public function add_cart(Request $request){
     return redirect('/cart');
 }
 
-public function show_cart(){
-$cart = Session::get('cart');
-$product_id = array_keys($cart);
+public function show_cart() {
+    $cart = Session::get('cart', []); // Trả về mảng rỗng nếu không có giá trị trong session
+    $product_id = is_array($cart) ? array_keys($cart) : []; // Kiểm tra nếu cart là mảng
 
-$products = product::whereIn('id',$product_id) -> get();
+    $products = product::whereIn('id', $product_id)->get();
 
-return view('cart',[
-    'products' => $products,
-]);
+    return view('cart', [
+        'products' => $products,
+    ]);
 }
+
 public function delete_cart(Request $request){
     $cart = Session::get('cart');
     $product_id = $request -> id;
@@ -104,6 +108,7 @@ public function send_cart(Request $request){
   $order_detail = json_encode($request -> input('product_id'));
   $order -> order_detail = $order_detail;
   $order -> token =  $token;
+  $order->user_id = Auth::id(); // Gán ID của người dùng hiện tại
   $order -> save();
   Session::forget('cart');
   $mailifor = $order -> email;
@@ -129,6 +134,83 @@ if(Auth::attempt(
 
 return redirect() -> back();
 ;
+}
+public function logins(){
+return view('logins');
+}
+public function register(){
+return view('register');
+}
+public function postregister(Request $request){
+
+$request -> merge(['password' =>Hash::make($request-> password)]);
+
+try {
+
+User::create($request->all());
+} catch (\Throwable $th) {
+    dd($th);
+   
+}
+return redirect()-> route('logins');
+}
+public function postlogins(Request $request){
+    if(Auth::attempt(['email' => $request-> email, 'password' => $request-> password])){
+        return redirect()-> route('index');
+    }else{
+        return redirect()-> back();
+    }
+
+}
+public function logout(Request $request){
+    Auth::logout();
+        return redirect()-> back();
+    
+
+}
+public function myOrders() {
+    // Lấy tất cả đơn hàng của người dùng hiện tại
+    $orders = Order::where('user_id', Auth::id())->get();
+    $products = Product::all(); // Lấy tất cả sản phẩm
+
+    // Khởi tạo biến để tính tổng tiền của tất cả đơn hàng
+    $grandTotal = 0;
+
+    // Tính tổng tiền cho mỗi đơn hàng
+    foreach ($orders as $order) {
+        $order_detail = json_decode($order->order_detail, true); // Giả sử order_detail là JSON
+        $total_price = 0; // Khởi tạo tổng tiền cho từng đơn hàng
+
+        foreach ($order_detail as $product_id => $quantity) {
+            // Tìm sản phẩm dựa trên product_id
+            $product = $products->firstWhere('id', $product_id);
+            if ($product) {
+                $total_price += $product->price_nomal * $quantity; // Tính tổng tiền cho đơn hàng
+            }
+        }
+        
+        $order->total_price = $total_price; // Gán giá trị tổng tiền cho đơn hàng
+        $grandTotal += $total_price; // Cộng tổng tiền của đơn hàng vào tổng tiền toàn bộ
+    }
+
+    return view('my_orders', [
+        'orders' => $orders,
+        'products' => $products,
+        'grandTotal' => $grandTotal, // Truyền biến tổng tiền vào view
+    ]);
+}
+
+
+public function orderDetails($id) {
+    // Lấy chi tiết đơn hàng theo ID
+    $order = Order::findOrFail($id);
+    $order_detail = json_decode($order->order_detail, true);
+    $products = Product::all(); // Thêm dòng này để gán giá trị cho $products
+    return view('order_details', [
+         'products' => $products,'order' => $order,
+      
+        'order_detail' => $order_detail,
+    ]);
 }
 
 }
