@@ -53,7 +53,8 @@ Route::get('/cart/delete/{id}', [FontendController::class,'delete_cart']);
 Route::post('/cart/update', [FontendController::class,'update_cart']);
 Route::post('/cart/send', [FontendController::class,'send_cart']);
 // infor
-Route::get('/info',function(){return view('info');});
+
+Route::get('/info', [FontendController::class,'info']);
 // contact
 Route::get('/contact',function(){return view('contact');});
 // type
@@ -61,6 +62,9 @@ Route::get('/producttype', function () {
     $products = Product::all();
     return view('producttype', compact('products'));
 });
+// feature 1
+Route::get('/teddyshopf1', [FontendController::class, 'teddyshopf1'])->name('teddyshopf1');
+Route::get('/teddyshopf2', [FontendController::class, 'teddyshopf2'])->name('teddyshopf2');
 // 
 Route::get('/search', [ProductController::class, 'ajaxSearch']); // Thay đổi tên phương thức
 Route::get('/logins', [FontendController::class, 'logins'])->name('logins'); 
@@ -79,3 +83,13 @@ Route::get('/admin/statistics/orders', [orderController::class, 'orderStatistics
 Route::get('/user-statistics', [orderController::class, 'userStatistics'])->name('user.statistics');
 Route::get('/admin/dashboard', [orderController::class, 'dashboard'])->name('admin.dashboard');
 
+
+
+Route::get('/admin/news/edit-images', [FontendController::class, 'edit'])->name('admin.edit.images');
+Route::post('/admin/update-media', [FontendController::class, 'updateMedia'])->name('admin.update.media');
+
+// Trang chỉnh sửa nội dung của admin
+Route::get('/admin/news/edit_content', [FontendController::class, 'content'])->name('admin.edit.content');
+
+// Route cho hành động cập nhật nội dung
+Route::put('/admin/news/update_content', [FontendController::class, 'updateContent'])->name('admin.updateContent');

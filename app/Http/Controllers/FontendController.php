@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Mail\TestMail;
+use App\Models\Content;
 use App\Models\Order;
 use App\Models\Promotion;
+use App\Models\Setting;
 use App\Models\User;
 use App\Notifications\EmailNotification;
 use Arr;
@@ -32,9 +34,15 @@ public function show_product(Request $request){
         'product'=> $product
     ]);
 }
-public function info(Request $request){
-    return view("info");
+public function info(Request $request)
+{
+    // Truy vấn dữ liệu từ cơ sở dữ liệu (ví dụ lấy tất cả nội dung hoặc một bản ghi cụ thể)
+    $content = Content::first(); // Hoặc Content::find(1) hoặc Content::all() tùy vào yêu cầu của bạn
+
+    // Truyền dữ liệu vào view
+    return view("info", compact('content'));
 }
+
 public function contact(Request $request){
     return view("contact");
 }
@@ -42,6 +50,13 @@ public function contact(Request $request){
 public function producttype(Request $request) {
     $products = Product::all(); // Lấy tất cả sản phẩm
     return view('producttype', compact('products'));
+}
+// feature1
+public function teddyshopf1(Request $request){
+    return view("teddyshopf1");
+}
+public function teddyshopf2(Request $request){
+    return view("teddyshopf2");
 }
 
 public function add_cart(Request $request){
@@ -117,6 +132,7 @@ public function send_cart(Request $request){
 Notification::send($order, new EmailNotification($order));
   return redirect('/oder/confirm');
 }
+
 public function show_login(){
     return view('login');
 }
@@ -178,9 +194,15 @@ public function myOrders() {
 
     // Tính tổng tiền cho mỗi đơn hàng
     foreach ($orders as $order) {
-        $order_detail = json_decode($order->order_detail, true); // Giả sử order_detail là JSON
+        $order_detail = json_decode($order->order_detail, true); // Giải mã JSON
+    
+        // Kiểm tra nếu $order_detail là mảng, nếu không, gán giá trị mặc định
+        if (!is_array($order_detail)) {
+            $order_detail = []; // Gán giá trị mặc định nếu không phải là mảng
+        }
+    
         $total_price = 0; // Khởi tạo tổng tiền cho từng đơn hàng
-
+    
         foreach ($order_detail as $product_id => $quantity) {
             // Tìm sản phẩm dựa trên product_id
             $product = $products->firstWhere('id', $product_id);
@@ -188,10 +210,11 @@ public function myOrders() {
                 $total_price += $product->price_nomal * $quantity; // Tính tổng tiền cho đơn hàng
             }
         }
-        
-        $order->total_price = $total_price; // Gán giá trị tổng tiền cho đơn hàng
+    
+        $order->total_price = $total_price; // Gán tổng tiền cho đơn hàng
         $grandTotal += $total_price; // Cộng tổng tiền của đơn hàng vào tổng tiền toàn bộ
     }
+    
 
     return view('my_orders', [
         'orders' => $orders,
@@ -212,5 +235,110 @@ public function orderDetails($id) {
         'order_detail' => $order_detail,
     ]);
 }
+public function edit()
+{
+    $sliderImage1 = \App\Models\Setting::where('key', 'slider_image_1')->value('value');
+    $sliderImage2 = \App\Models\Setting::where('key', 'slider_image_2')->value('value');
+    $sliderImage3 = \App\Models\Setting::where('key', 'slider_image_3')->value('value');
+    $title = 'Quản lý hình ảnh sidebar'; // Đặt tiêu đề bạn muốn truyền vào view
+    return view('admin.news.edit_images', compact('sliderImage1', 'sliderImage2', 'sliderImage3','title')); // Truyền dữ liệu vào view
+}
+
+
+// sửa hình ảnh side bar của admin lên trang user
+public function updateMedia(Request $request)
+{
+    // Validate input
+    $request->validate([
+        'image1' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'image2' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'image3' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
+
+    // Upload images and get paths if they exist
+    if ($request->hasFile('image1')) {
+        $path1 = $request->file('image1')->store('images', 'public'); // Chỉ định lưu vào storage/app/public/images
+        Setting::updateOrCreate(['key' => 'slider_image_1'], ['value' => $path1]);
+    }
+
+    if ($request->hasFile('image2')) {
+        $path2 = $request->file('image2')->store('images', 'public'); // Chỉ định lưu vào storage/app/public/images
+        Setting::updateOrCreate(['key' => 'slider_image_2'], ['value' => $path2]);
+    }
+
+    if ($request->hasFile('image3')) {
+        $path3 = $request->file('image3')->store('images', 'public'); // Chỉ định lưu vào storage/app/public/images
+        Setting::updateOrCreate(['key' => 'slider_image_3'], ['value' => $path3]);
+    }
+
+
+
+    return redirect()->back()->with('success', 'Cập nhật hình ảnh thành công!');
+}
+ public function content()
+    {
+        $title = 'Quản lý hình ảnh sidebar';
+        $content = Content::first(); // Giả sử bạn chỉ có một bản ghi
+        return view('admin.news.edit_content', compact('title', 'content'));
+    }
+
+    public function updateContent(Request $request)
+    {
+        $content = Content::find(1); // Lấy bản ghi đầu tiên hoặc theo ID động
+
+        // Validate dữ liệu
+        $validated = $request->validate([
+            'promotion_title' => 'required|string|max:255',
+            'promotion_description' => 'required|string',
+            'remaining_quantity' => 'required|integer|min:0',
+            'company_title' => 'required|string|max:255',
+            'company_description' => 'required|string',
+            'return_policy' => 'required|string',
+            'feedback_text' => 'required|string',
+            'hpvenus_image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
+            'asustuf_image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
+            'feedback_image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
+        ]);
+
+        // Cập nhật dữ liệu từ form
+        $content->promotion_title = $request->promotion_title;
+        $content->promotion_description = $request->promotion_description;
+        $content->remaining_quantity = $request->remaining_quantity;
+        $content->company_title = $request->company_title;
+        $content->company_description = $request->company_description;
+        $content->return_policy = $request->return_policy;
+        $content->feedback_text = $request->feedback_text;
+        $content->feature2_description = $request->feature2_description;
+
+        // Xử lý hình ảnh
+        if ($request->hasFile('hpvenus_image')) {
+            $path = $request->file('hpvenus_image')->store('public/images');
+            $content->hpvenus_image = basename($path);
+        }
+
+        if ($request->hasFile('asustuf_image')) {
+            $path = $request->file('asustuf_image')->store('public/images');
+            $content->asustuf_image = basename($path);
+        }
+
+        if ($request->hasFile('feedback_image')) {
+            $path = $request->file('feedback_image')->store('public/images');
+            $content->feedback_image = basename($path);
+        }
+        if ($request->hasFile('company_image')) {
+            $path = $request->file('company_image')->store('public/images');
+            $content->company_image = basename($path);
+        }
+        if ($request->hasFile('feature2_image')) {
+            $path = $request->file('feature2_image')->store('public/images');
+            $content->feature2_image = basename($path);
+        }
+        // Lưu bản ghi
+        $content->save();
+
+        // Thông báo thành công
+        return redirect()->route('admin.edit.content')->with('success', 'Cập nhật nội dung thành công!');
+    }
+
 
 }

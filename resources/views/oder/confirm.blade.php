@@ -10,7 +10,7 @@
                     <p> Đơn hàng của bạn đã được gửi <span style="font-weight: bold;"> Thành Công</span>!
                     <br> 
                     <span style="font-size: small;">Vui lòng check <span style="font-weight: bold;">Email</span> đã đăng ký để xác nhận đơn hàng</span></p>
-                       <br> <button class="main-btn">Tiếp tục mua hàng</button>
+                       <br> <a href="/"><button class="main-btn">Tiếp tục mua hàng</button></a>
                 </div>
              </div>
         </div>

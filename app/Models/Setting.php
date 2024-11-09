@@ -1,15 +1,12 @@
 <?php
 
-// app/Models/Promotion.php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Promotion extends Model
+class Setting extends Model
 {
+    protected $fillable = ['key', 'value']; // Thêm 'key' vào đây
     use HasFactory;
-
-    protected $fillable = ['code', 'discount', 'expires_at'];
 }

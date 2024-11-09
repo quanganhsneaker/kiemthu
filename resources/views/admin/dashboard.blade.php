@@ -126,12 +126,12 @@
                                     </tr>
                                     <tr>
                                         <td>02</td>
-                                        <td>Mguyễn Thị Diệu</td>
+                                        <td>Nguyễn Thị Diệu</td>
                                         <td>100,000,000 VNĐ</td>
                                       
                                         <td>2024-11-02</td>
                                     </tr>
-                                    <tr>
+                                    <tr> 
                                         <td>03</td>
                                         <td>Nguyễn Thị Ngọc Khánh</td>
                                         <td>50,000,000 VNĐ</td>

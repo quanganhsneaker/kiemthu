@@ -39,8 +39,10 @@
                 <li><a href=""><i class="ri-arrow-right-s-fill"></i></i>Quản lý nội dung<i class="ri-add-box-line"></i></a>
                     <ul class="sub-menu">
                         <div class="sub-menu-items"><li>
-                            <a href=""><i class="ri-arrow-right-circle-fill"></i>Danh mục bài viết</a></li>
-                        <li><a href=""><i class="ri-arrow-right-circle-fill"></i>Hình ảnh/side bar</a></li></div>
+                            <a href="{{ route('admin.edit.content') }}"><i class="ri-arrow-right-circle-fill"></i>Danh mục bài viết</a></li>
+                            <li><a href="{{ route('admin.edit.images') }}"><i class="ri-arrow-right-circle-fill"></i>Hình ảnh/side bar</a></li>
+
+
                     </ul>
                 </li>
             </ul>

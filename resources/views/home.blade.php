@@ -8,17 +8,23 @@
     @include('parts.header')
 
     <!-- =============slider================== -->
-    <section class="slider">
-        <div class="slider-items">
-            <div class="slider-item"><img src="https://hacom.vn/media/lib/06-04-2022/1200x675.png" alt=""></div>
-            <div class="slider-item"><img src="https://maytinhhaiphong.com/wp-content/uploads/2022/01/Bao-hanh-laptop.png" alt=""></div>
-            <div class="slider-item"><img src="https://www.ccn.com.vn/images/users/images/cte%20(2).png" alt=""></div>
-        </div>
-        <div class="slider-arrow">
-            <i class="ri-arrow-right-line"></i>
-            <i class="ri-arrow-left-line"></i>
-        </div>
-    </section>
+    @php
+    $sliderImage1 = \App\Models\Setting::where('key', 'slider_image_1')->value('value');
+    $sliderImage2 = \App\Models\Setting::where('key', 'slider_image_2')->value('value');
+    $sliderImage3 = \App\Models\Setting::where('key', 'slider_image_3')->value('value');
+@endphp
+
+<section class="slider">
+    <div class="slider-items">
+        <div class="slider-item"><img src="{{ asset('storage/' . $sliderImage1) }}" alt=""></div>
+        <div class="slider-item"><img src="{{ asset('storage/' . $sliderImage2) }}" alt=""></div>
+        <div class="slider-item"><img src="{{ asset('storage/' . $sliderImage3) }}" alt=""></div>
+    </div>
+    <div class="slider-arrow">
+        <i class="ri-arrow-right-line"></i>
+        <i class="ri-arrow-left-line"></i>
+    </div>
+</section>
 
     <!-- ============ Product Sections ============== -->
     <section class="hot-products">
