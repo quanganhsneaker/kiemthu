@@ -3,7 +3,7 @@
 <form action="/producttype" method="get">
     <style>
         .hot-products{
-            margin-top: 100px;
+            margin-top: 80px;
         }
   header{
     position: fixed; /* Cố định vị trí */
@@ -16,6 +16,10 @@
     </style>
      <!-- ============ Product Sections ============== -->
      <section class="hot-products">
+        <div class="noel"> 
+            <img src="https://cdnv2.tgdd.vn/webmwg/2024/ContentMwg/images/noel/2024/tgdd/label-left.png" alt="">
+             <img src="https://cdnv2.tgdd.vn/webmwg/2024/ContentMwg/images/noel/2024/tgdd/label-right.png" alt="">
+               </div>
         <div class="container">
 
             <!-- Phần hiển thị sản phẩm theo danh mục -->

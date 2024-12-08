@@ -18,7 +18,7 @@
             labels: ['Tổng số đơn hàng', 'Đơn hàng đã xác nhận', 'Đơn hàng đang chờ xác nhận'], // Nhãn cho các cột
             datasets: [{
                 label: 'Số lượng đơn hàng',
-                data: [{{ $totalOrders }}, {{ $processedOrders }}, {{ $pendingOrders }}], // Dữ liệu từ controller
+                data: [{{ $tong }}, {{ $daxacnhan }}, {{ $chuaxacnhan }}], // Dữ liệu từ controller
                 backgroundColor: [
                     'rgba(75, 192, 192, 0.2)', // Màu nền cho cột tổng số đơn hàng
                     'rgba(153, 102, 255, 0.2)', // Màu nền cho cột đơn hàng đã xác nhận
@@ -42,8 +42,8 @@
     });
 </script>
 <div class="revenue-info">
-    <p>Tổng số đơn hàng: <strong>{{ $totalOrders }}</strong></p>
-    <p>Đơn hàng đã xác nhận: <strong>{{ $processedOrders }}</strong></p>
-    <p>Đơn hàng đang chờ xác nhận: <strong>{{ $pendingOrders }}</strong></p>
+    <p>Tổng số đơn hàng: <strong>{{ $tong }}</strong></p>
+    <p>Đơn hàng đã xác nhận: <strong>{{ $daxacnhan }}</strong></p>
+    <p>Đơn hàng đang chờ xác nhận: <strong>{{ $chuaxacnhan }}</strong></p>
 </div>
 @endsection

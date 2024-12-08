@@ -106,4 +106,49 @@ if(quanMinus != null && quanPlus != null){
         }
     })
 }
+function createSnowflakes() {
+    const snowContainer = document.createElement('div');
+    snowContainer.classList.add('snow');
+    document.body.appendChild(snowContainer);
+
+    // Số lượng bông tuyết
+    const numSnowflakes = 100;
+
+    for (let i = 0; i < numSnowflakes; i++) {
+        const snowflake = document.createElement('div');
+        snowflake.classList.add('snowflake');
+
+        // Vị trí và thời gian animation ngẫu nhiên
+        snowflake.style.left = `${Math.random() * 100}vw`; // X position
+        snowflake.style.animationDuration = `${Math.random() * 5 + 5}s`; // Thời gian rơi
+        snowflake.style.animationDelay = `${Math.random() * 5}s`; // Delay khởi đầu
+        snowflake.style.animationTimingFunction = 'linear';
+
+        // Góc rơi ngẫu nhiên
+        snowflake.style.setProperty('--x', `${Math.random() * 20 - 10}vw`);
+
+        // Thêm snowflake vào container
+        snowContainer.appendChild(snowflake);
+    }
+}
+
+// Gọi hàm để tạo tuyết khi trang được tải
+window.onload = createSnowflakes;
+function searchProducts() {
+    let query = document.getElementById("search-query").value;
+
+    if (query.length > 0) {
+        fetch(`/search?query=${query}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("search-results").innerHTML = data;
+                document.getElementById("search-results").style.display = "block";
+            })
+            .catch(error => console.error('Error:', error));
+    } else {
+        document.getElementById("search-results").innerHTML = '';
+        document.getElementById("search-results").style.display = "none";
+    }
+}
+
 }

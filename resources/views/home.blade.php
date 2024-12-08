@@ -27,12 +27,27 @@
 </section>
 
     <!-- ============ Product Sections ============== -->
+    <div class="container1">
+        <a href="/producttype">
+          <img src="https://cdnv2.tgdd.vn/mwg-static/common/Category/66/cf/66cfa8d199a3a2f0757941d8149971d8.png" alt="">
+         <img src="https://cdnv2.tgdd.vn/mwg-static/common/Category/93/b6/93b61bcd1237eb7871ba30a003e2352e.png" alt="">
+         <img src="https://cdnv2.tgdd.vn/mwg-static/common/Category/5e/8e/5e8e0225b7f45864fb8c4dbf7b151533.png" alt="">
+         <img src="https://cdnv2.tgdd.vn/mwg-static/common/Category/7b/25/7b256aa49ccc53d2fafc71aeff1da981.png" alt="">
+         <img src="https://cdnv2.tgdd.vn/mwg-static/common/Category/44/10/4410b95393b8e2be4065f181932cf3b9.png" alt="">
+         <img src="https://cdnv2.tgdd.vn/mwg-static/common/Category/16/20/1620a7d46f9bd765e33d9e291567e90a.png" alt="">
+         </a>
+         
+      </div>
+      
     <section class="hot-products">
+        <div class="noel"> 
+     <img src="https://cdnv2.tgdd.vn/webmwg/2024/ContentMwg/images/noel/2024/tgdd/label-left.png" alt="">
+      <img src="https://cdnv2.tgdd.vn/webmwg/2024/ContentMwg/images/noel/2024/tgdd/label-right.png" alt="">
+        </div>
         <div class="container">
-
             <!-- Phần hiển thị sản phẩm theo danh mục -->
             @php
-         $categories = ['hot' => 'Sản Phẩm Bán Chạy', 'dell' => 'DELL', 'macbook' => 'MACBOOK',  'acer' => 'ACER','accessory' => 'Phụ Kiện '];
+         $categories = ['hot' => 'Sản Phẩm Bán Chạy', 'dell' => 'DELL', 'macbook' => 'MACBOOK',  'acer' => 'ACER','accessory' => 'Phụ Kiện ','asus' => "Asus",'hp' => 'Hp','lenovo' => 'Lenovo'];
             @endphp
 
             @foreach ($categories as $category => $title)
@@ -65,6 +80,7 @@
                                         <span>{{ number_format($product->price_sale) }}<sup>đ</sup></span>
                                     </p>
                                 </div>
+
                             </div>
                          
                         @endif

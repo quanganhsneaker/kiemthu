@@ -22,7 +22,7 @@
                     </div>
                     <div class="admin-content-main-content">
                         <!-- nội dung nằm ở đây -->
-                       
+                        <h1 style="text-align: center; font-size: xx-large">Chào mừng bạn đến với website dành cho Admin(quản trị viên)</h1>
 
                     </div>
                 </div>

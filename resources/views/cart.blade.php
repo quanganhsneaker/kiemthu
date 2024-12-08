@@ -16,8 +16,8 @@
                 <div class="row-grid">
                     <div class="cart-section-left">
                         <h2 class="main-h2">Chi tiết đơn hàng</h2>
-                        <div class="cart-section-left-detail">
-                            <table>
+                        <div class="user-statistics">
+                            <table class="abc123">
                                 <thead>
                                     <tr>
                                         <th>Ảnh</th>
@@ -111,7 +111,10 @@
                     </div>
                 </div>
             </div>
-
+            <div class="noel"> 
+                <img src="https://cdnv2.tgdd.vn/webmwg/2024/ContentMwg/images/noel/2024/tgdd/label-left.png" alt="">
+                 <img src="https://cdnv2.tgdd.vn/webmwg/2024/ContentMwg/images/noel/2024/tgdd/label-right.png" alt="">
+                   </div>
             <!-- SweetAlert -->
             @if(session('success'))
                 <script>

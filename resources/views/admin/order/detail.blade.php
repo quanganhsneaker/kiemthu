@@ -1,7 +1,7 @@
 @extends('admin.main')
 @section('content')
-<div class="admin-content-main-content-oder-list">
-                            <table>
+<div class="user-statistics">
+                            <table class="abc123">
                                 <thead>
                                     <tr>
                                         <th>ID</th>

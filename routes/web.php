@@ -1,4 +1,6 @@
 <?php
+use App\Http\Controllers\ComplaintController;
+use App\Models\Order;
 use App\Models\Product; 
 use App\Http\Controllers\Admin\orderController;
 use App\Http\Controllers\Admin\ProductController;
@@ -34,8 +36,31 @@ Route::middleware('auth')->group(function () {
 
         });
     });
-});
+    // doanh thu admin
+Route::get('/admin/statistics/revenue', [orderController::class, 'doanhthu'])->name('statistics.revenue');
+//  thống kê đơn hàng admin
+Route::get('/admin/statistics/orders', [orderController::class, 'orderStatistics'])->name('statistics.orders');
+// thống kê user
+Route::get('/user-statistics', [orderController::class, 'userStatistics'])->name('user.statistics');
+Route::get('/admin/dashboard', [orderController::class, 'dashboard'])->name('admin.dashboard');
+Route::delete('/admin/user/delete/{id}', [orderController::class, 'destroy'])->name('admin.user.delete');
 
+
+Route::get('/admin/news/edit-images', [FontendController::class, 'edit'])->name('admin.edit.images');
+Route::post('/admin/update-media', [FontendController::class, 'updateMedia'])->name('admin.update.media');
+
+// Trang chỉnh sửa nội dung của admin
+Route::get('/admin/news/edit_content', [FontendController::class, 'content'])->name('admin.edit.content');
+
+// Route cho hành động cập nhật nội dung
+Route::put('/admin/news/update_content', [FontendController::class, 'updateContent'])->name('admin.updateContent');
+// khiếu nại admin 
+Route::get('/admin/complaints', [ComplaintController::class, 'index'])->middleware('auth')->name('admin.complaints');
+});
+Route::patch('/admin/complaints/{id}/confirm', [ComplaintController::class, 'confirm'])->middleware('auth')->name('admin.complaints.confirm');
+
+// khiếu nại user
+Route::post('/submit_complaint', [ComplaintController::class, 'store'])->name('complaint.store');
 
 // upload
 Route::post('/upload',[UploadController::class,'uploadImage']);
@@ -44,7 +69,7 @@ Route::post('/uploads',[UploadController::class,'uploadImages']);
 Route::get('/', [FontendController:: class,'index'])->name('index');
 Route::get('/product/{id}', [FontendController::class,'show_product']);
 
-Route::get('/oder/confirm', function () {return view('oder.confirm');});
+Route::get('/oder/confirm/{id}', [FontendController::class, 'confirmOrder'])->name('oder.confirm');
 Route::get('/oder/success', function () {return view('oder.success');});
 // cart
 Route::post('/cart/add', [FontendController::class,'add_cart']);
@@ -66,7 +91,8 @@ Route::get('/producttype', function () {
 Route::get('/teddyshopf1', [FontendController::class, 'teddyshopf1'])->name('teddyshopf1');
 Route::get('/teddyshopf2', [FontendController::class, 'teddyshopf2'])->name('teddyshopf2');
 // 
-Route::get('/search', [ProductController::class, 'ajaxSearch']); // Thay đổi tên phương thức
+Route::get('/search', [ProductController::class, 'ajaxSearch'])->name('ajax.search');
+
 Route::get('/logins', [FontendController::class, 'logins'])->name('logins'); 
 Route::post('/logins', [FontendController::class, 'postlogins']);   
 Route::get('/register', [FontendController::class, 'register'])->name('register'); 
@@ -75,21 +101,10 @@ Route::get('/logout', [FontendController::class, 'logout'])->name('logout');
 // quản lý đơn hàng user
 Route::get('/my-orders', [FontendController::class, 'myOrders'])->name('my.orders');
 Route::get('/order/{id}', [FontendController::class, 'orderDetails'])->name('order.details')->middleware('auth');
-// doanh thu admin
-Route::get('/admin/statistics/revenue', [orderController::class, 'revenueStatistics'])->name('statistics.revenue');
-//  thống kê đơn hàng admin
-Route::get('/admin/statistics/orders', [orderController::class, 'orderStatistics'])->name('statistics.orders');
-// thống kê user
-Route::get('/user-statistics', [orderController::class, 'userStatistics'])->name('user.statistics');
-Route::get('/admin/dashboard', [orderController::class, 'dashboard'])->name('admin.dashboard');
+// chat
+Route::get('/chatuser', [FontendController::class, 'chatUser'])->name('chatuser');
+Route::post('/send-message', [FontendController::class, 'sendMessage'])->name('send.message');
+Route::post('/send-admin-message', [FontendController::class, 'sendAdminMessage'])->name('send.admin.message');
+Route::get('/admin/chat/list_users', [FontendController::class, 'listUsers'])->name('admin.chat.list_users');
+Route::get('/admin/chat/user/{id}', [FontendController::class, 'chatWithUser'])->name('admin.chat.user');
 
-
-
-Route::get('/admin/news/edit-images', [FontendController::class, 'edit'])->name('admin.edit.images');
-Route::post('/admin/update-media', [FontendController::class, 'updateMedia'])->name('admin.update.media');
-
-// Trang chỉnh sửa nội dung của admin
-Route::get('/admin/news/edit_content', [FontendController::class, 'content'])->name('admin.edit.content');
-
-// Route cho hành động cập nhật nội dung
-Route::put('/admin/news/update_content', [FontendController::class, 'updateContent'])->name('admin.updateContent');

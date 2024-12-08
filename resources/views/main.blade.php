@@ -6,8 +6,11 @@
 <body>
     <!-- ========header================ -->
  @include('parts.header')
+
  <!-- content -->
+
 @yield('content')
+
 <!-- ============hotproduct============== -->
 @include('parts.hotproduct')
 <!-- ==============acer================ -->

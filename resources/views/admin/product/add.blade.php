@@ -19,6 +19,9 @@
                                     <option value="acer">Acer</option>
                                     <option value="dell">Dell</option>
                                     <option value="macbook">Macbook</option>
+                                    <option value="hp">Hp</option>
+                                    <option value="lenovo">Lenovo</option>
+                                    <option value="asus">Asus</option>
                                     <option value="hot">Hot</option>
                                     <option value="accessory">Accessory</option>
                                    </select>

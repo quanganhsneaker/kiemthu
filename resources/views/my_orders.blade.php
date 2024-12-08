@@ -70,6 +70,7 @@
                     <td>{{ number_format($order->total_price) }} <sup>đ</sup></td>
                     <td><a href="{{ route('order.details', $order->id) }}">Xem Chi Tiết</a></td>
                 </tr>
+                
             @endforeach
             <tr>
                 <td style="font-weight: 800;text-align: center" colspan="3">Tổng tiền của tất cả Đơn Hàng bạn đã chi tiêu: </td>
@@ -77,7 +78,11 @@
             </tr>
         </tbody>
     </table>
-
+  
     
 </section>
+<div class="noel"> 
+    <img src="https://cdnv2.tgdd.vn/webmwg/2024/ContentMwg/images/noel/2024/tgdd/label-left.png" alt="">
+     <img src="https://cdnv2.tgdd.vn/webmwg/2024/ContentMwg/images/noel/2024/tgdd/label-right.png" alt="">
+       </div>
 @endsection

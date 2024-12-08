@@ -14,6 +14,7 @@
     margin: 0;
     box-sizing: border-box;
     font-family: var(--main-font);
+    
 }
 li {
     list-style: none;
@@ -26,8 +27,10 @@ a {
     color: unset;
 }
 .container {
+
     max-width: 1240px;
     margin: auto;
+    
 }
 .row-grid {
     display: grid;
@@ -159,14 +162,14 @@ header .row-flex {
     cursor: pointer;
     position: relative;
 }
-.header-cart i::after {
+/* .header-cart i::after {
     content: attr(number);
     position: absolute;
     display: flex;
     width: 20px;
     height: 20px;
-    right: -20px;
-    top: -10px;
+    right: -97px;
+    top: 0px;
     background-color: black;
     border-radius: 50%;
     color: var(--main-color);
@@ -174,18 +177,21 @@ header .row-flex {
     align-items: center;
     text-align: center;
     font-size: small;
-}
+} */
+
+
 .header-cart {
     padding: 0 50px;
 }
 
 /* slider========================= */
 .slider {
-    height: 710px;
+    height: 650px;
     width: 100vw;
     overflow: hidden;
     aspect-ratio: 1.79/1;
     position: relative;
+    
 }
 .slider-items {
     position: relative;
@@ -216,6 +222,11 @@ header .row-flex {
     flex-direction: column;
 }
 /* ==================hot-product===================== */
+/* ==================hot-product===================== */
+
+.hot-products .container{
+    margin-top: -119px;
+}
 .hot-products .row-grid-hot-product {
     grid-template-columns: repeat(4, 1fr);
     column-gap: 10px;
@@ -479,6 +490,7 @@ td {
 .cart-section-right-input-email input {
     width: 100%;
 }
+
 /* * Đặt chung cho phần lựa chọn phương thức thanh toán */
 .cart-section-right-payment {
     margin-top: 20px;
@@ -899,7 +911,6 @@ table td {
     background-color: #f2f2f2;
 }
 
-
 /* Footer */
 
 /* Responsive Design */
@@ -930,7 +941,8 @@ table td {
 }
 
 /* Headings */
-.policy h2, .policy h3 {
+.policy h2,
+.policy h3 {
     color: black;
     margin-bottom: 15px;
     border-bottom: 2px solid black;
@@ -958,13 +970,13 @@ table td {
 .policy .section {
     display: flex;
     gap: 20px;
-    align-items: center;  /* Căn giữa các phần tử theo chiều ngang */
+    align-items: center; /* Căn giữa các phần tử theo chiều ngang */
     margin-bottom: 30px;
 }
 
 .policy .section .number {
     width: 40px;
-    height: 40px;  /* Đảm bảo số có kích thước hình vuông */
+    height: 40px; /* Đảm bảo số có kích thước hình vuông */
     font-weight: bold;
     text-align: center;
     background-color: #f5f5f5;
@@ -973,14 +985,14 @@ table td {
 }
 
 .policy .section .content {
-    flex: 1;  /* Nội dung chiếm phần còn lại */
+    flex: 1; /* Nội dung chiếm phần còn lại */
 }
 
 /* Image Styling */
 .policy .section .img {
     width: 200px;
     height: 200px;
-    background-color: #f5f5f5;  /* Bổ sung nền cho ảnh */
+    background-color: #f5f5f5; /* Bổ sung nền cho ảnh */
     border-radius: 8px;
     display: flex;
     justify-content: center;
@@ -991,12 +1003,11 @@ table td {
 .policy .section .img img {
     width: 100%;
     height: 100%;
-    object-fit: cover;  /* Đảm bảo ảnh vừa vặn mà không bị méo */
+    object-fit: cover; /* Đảm bảo ảnh vừa vặn mà không bị méo */
 }
 
 /* Footer Button */
 .mt-3 .main-btn {
- 
     padding: 10px 20px;
     background-color: black;
     color: white;
@@ -1026,7 +1037,266 @@ table td {
     }
 
     .policy .section .img {
-        width: 100%;  /* Chiều rộng của ảnh sẽ 100% */
+        width: 100%; /* Chiều rộng của ảnh sẽ 100% */
         height: auto;
     }
+}
+
+.complaint-container {
+    background-color: #f5f5f5; /* Màu nền cho container */
+    padding: 20px; /* Padding bên trong container */
+    border-radius: 8px; /* Bo góc cho container */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Đổ bóng cho container */
+    max-width: 600px; /* Chiều rộng tối đa cho container */
+    margin: auto; /* Căn giữa container */
+    margin-top: 130px;
+}
+
+h1 {
+    text-align: center; /* Căn giữa tiêu đề */
+    margin-bottom: 20px; /* Khoảng cách dưới tiêu đề */
+    color: black; /* Màu chữ trắng */
+}
+
+.form-input,
+.form-textarea {
+    width: 100%; /* Chiếm toàn bộ chiều rộng */
+    padding: 10px; /* Padding cho input và textarea */
+    margin-bottom: 15px; /* Khoảng cách giữa các trường */
+    border: 1px solid silver; /* Viền tối */
+    border-radius: 4px; /* Bo góc cho input và textarea */
+    background-color: #f5f5f5; /* Nền tối cho input và textarea */
+    color: black; /* Màu chữ trắng */
+    font-size: 16px; /* Kích thước chữ */
+}
+
+.form-input:focus,
+.form-textarea:focus {
+    border-color: #ffffff; /* Đổi màu viền khi focus */
+    outline: none; /* Loại bỏ outline mặc định */
+    color: black;
+}
+
+.form-button {
+    background-color: black; /* Màu nền cho nút */
+    color: white; /* Màu chữ trắng */
+    padding: 10px; /* Padding cho nút */
+    border: none; /* Không có viền */
+    border-radius: 4px; /* Bo góc cho nút */
+    cursor: pointer; /* Thay đổi con trỏ khi hover */
+    font-size: 16px; /* Kích thước chữ */
+    width: 100%; /* Chiếm toàn bộ chiều rộng */
+    transition: background-color 0.3s; /* Hiệu ứng chuyển màu */
+}
+
+.form-button:hover {
+    background-color: green; /* Đổi màu khi hover */
+}
+
+select {
+    background-color: #333; /* Nền tối cho select */
+    color: black; /* Màu chữ trắng */
+}
+.container1 {
+    display: flex;
+    justify-content: center;
+
+}
+.container1 img {
+    margin: auto 10px;
+    background-color: #f2f4f7;
+    border-radius: 10px;
+}
+.user-statistics {
+    margin: 20px; 
+}
+
+.abc123 {
+   width: 800px;
+    border-collapse: collapse; /* Gộp các viền lại với nhau */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Thêm bóng cho bảng */
+}
+
+.abc123 th,
+.abc123 td {
+    border: 1px solid #ddd; /* Viền nhẹ cho các ô */
+    padding: 12px; /* Khoảng cách bên trong ô */
+    text-align: center; /* Canh trái cho nội dung */
+    vertical-align: middle; /* Căn giữa theo chiều dọc */
+}
+
+.abc123 th {
+    text-align: center;
+    background-color: black; /* Màu nền cho tiêu đề bảng */
+    color: whitesmoke; /* Màu chữ cho tiêu đề bảng */
+}
+
+.abc123 tr:hover {
+    background-color: #f1f1f1; /* Màu nền khi di chuột qua hàng */
+}
+
+.abc123 td {
+    vertical-align: middle; /* Căn giữa theo chiều dọc */
+}
+.header-cart {
+    position: relative;
+}
+
+.header-cart a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+}
+
+.cart-quantity {
+    position: absolute;
+    display: flex;
+    top: -12px;
+    right: 116.5px;
+    background-color: black;
+    color: white;
+    border-radius: 50%;
+    padding: 4px 4px;
+    font-size: 14px;
+    width: 20px;
+    height: 20px;
+    color: var(--main-color);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: small;
+}
+/* nhắn tin */
+.chat-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 100px;
+    margin-bottom: 120px;
+}
+
+.chat-header {
+    padding: 15px;
+    background-color: black;
+    color: white;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+}
+
+.chat-body {
+    padding: 15px;
+    height: 400px;
+    overflow-y: auto;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Khoảng cách giữa các tin nhắn */
+}
+
+.message {
+    display: inline-block; /* Bọc nội dung vừa chữ */
+    max-width: 70%; /* Đảm bảo không quá rộng */
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.4;
+    word-wrap: break-word; /* Ngắt dòng nếu nội dung quá dài */
+}
+
+/* Tin nhắn của người dùng */
+.message.sent {
+    background-color: #e8f4fd;
+    color: #333;
+    align-self: flex-end;
+    text-align: left;
+}
+
+/* Tin nhắn của admin */
+.message.received {
+    background-color: #f4f4f4;
+    color: #555;
+    align-self: flex-start;
+    text-align: right;
+}
+
+.chat-footer {
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-top: 1px solid #ddd;
+    display: flex;
+    gap: 10px;
+  
+}
+
+.chat-footer input[type="text"] {
+    flex: 1;
+    padding: 9px 170px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+.chat-footer button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.chat-footer button:hover {
+    background-color: #0056b3;
+}
+.snow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.snowflake {
+    position: absolute;
+    top: -10px;
+    background-color: #C2E9F5;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: snow 10s linear infinite;
+}
+
+/* Hiệu ứng tuyết rơi */
+@keyframes snow {
+    0% {
+        transform: translateX(0) translateY(0);
+    }
+    100% {
+        transform: translateX(var(--x)) translateY(calc(100vh + 10px));
+    }
+}
+.noel{
+    display: inline-block;
+}
+.noel img {
+    width: 120px; 
+    height: auto; 
+    margin-left: 40px;
+
+}
+.noel img:last-child{
+margin-left: 1600px;
 }

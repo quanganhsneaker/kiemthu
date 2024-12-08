@@ -55,10 +55,8 @@
              </div>
              <h2>Chi tiết sản phẩm</h2>
              <div class="row-flex">
-            
                 <div class="product-detail-content">
                 {!!$product->content!!}
-
                 </div>
              </div>
         </div>

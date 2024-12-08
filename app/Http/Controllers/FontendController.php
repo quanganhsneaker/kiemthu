@@ -69,7 +69,7 @@ public function add_cart(Request $request){
         ]);
     } else {
         $cart = Session::get('cart');
-        if (Arr::exists($cart, $product_id)) {
+        if (Arr::exists($cart, $product_id)) {      
             $cart[$product_id] = $cart[$product_id] + $product_qty;
         } else {
             $cart[$product_id] = $product_qty;
@@ -83,16 +83,30 @@ public function add_cart(Request $request){
     return redirect('/cart');
 }
 
-public function show_cart() {
-    $cart = Session::get('cart', []); // Trả về mảng rỗng nếu không có giá trị trong session
-    $product_id = is_array($cart) ? array_keys($cart) : []; // Kiểm tra nếu cart là mảng
+public function show_cart()
+{
+    // Lấy giỏ hàng từ session, trả về mảng rỗng nếu không có giá trị trong session
+    $cart = Session::get('cart', []);
 
-    $products = product::whereIn('id', $product_id)->get();
+    // Kiểm tra nếu giỏ hàng là một mảng
+    $product_ids = is_array($cart) ? array_keys($cart) : [];
 
+    // Lấy thông tin các sản phẩm trong giỏ từ cơ sở dữ liệu
+    $products = Product::whereIn('id', $product_ids)->get();
+
+    // Tính tổng số lượng sản phẩm trong giỏ hàng
+    $total_quantity = 0;
+    foreach ($cart as $product_id => $quantity) {
+        $total_quantity += $quantity;
+    }
+
+    // Trả về view giỏ hàng với các sản phẩm và tổng số lượng
     return view('cart', [
         'products' => $products,
+        'total_quantity' => $total_quantity,
     ]);
 }
+
 
 public function delete_cart(Request $request){
     $cart = Session::get('cart');
@@ -107,33 +121,43 @@ public function update_cart(Request $request){
     Session::put('cart',$cart);
     return redirect('/cart');
 }
-public function send_cart(Request $request){
-//    dd($request->all());
+public function send_cart(Request $request)
+{
+    // Tạo mã token ngẫu nhiên cho đơn hàng
+    $token = Str::random(12);
     
-  $token = Str::random(12);
-  $order = new Order();
-  $order -> name = $request -> input('name');
-  $order -> phone = $request -> input('phone');
-  $order -> email = $request -> input('email');
-  $order -> city = $request -> input('city');
-  $order -> district = $request -> input('district');
-  $order -> ward = $request -> input('ward');
-  $order -> address = $request -> input('address');
-  $order -> note = $request -> input('note');
-  $order_detail = json_encode($request -> input('product_id'));
-  $order -> order_detail = $order_detail;
-  $order -> token =  $token;
-  $order->user_id = Auth::id(); // Gán ID của người dùng hiện tại
-  $order -> save();
-  Session::forget('cart');
-  $mailifor = $order -> email;
-  $nameifor = $order -> name;
-  $Mail = Mail::to($mailifor) -> send(new TestMail($nameifor));
-Notification::send($order, new EmailNotification($order));
-  return redirect('/oder/confirm');
+    // Lưu đơn hàng vào cơ sở dữ liệu
+    $order = new Order();
+    $order->name = $request->input('name');
+    $order->phone = $request->input('phone');
+    $order->email = $request->input('email');
+    $order->city = $request->input('city');
+    $order->district = $request->input('district');
+    $order->ward = $request->input('ward');
+    $order->address = $request->input('address');
+    $order->note = $request->input('note');
+    $order_detail = json_encode($request->input('product_id'));
+    $order->order_detail = $order_detail;
+    $order->token = $token;
+    $order->user_id = Auth::id(); // Gán ID người dùng hiện tại
+    $order->save();
+
+    // Xóa giỏ hàng sau khi gửi đơn
+    Session::forget('cart');
+
+    // Gửi email xác nhận cho khách hàng (tuỳ chỉnh theo logic của bạn)
+    Mail::to($order->email)->send(new TestMail($order->name));
+
+    // Gửi thông báo
+    Notification::send($order, new EmailNotification($order));
+
+    // Chuyển hướng đến trang xác nhận với ID đơn hàng
+    return redirect()->route('oder.confirm', ['id' => $order->id]);
 }
+// ================================================================quỳnh=======================================
 
 public function show_login(){
+
     return view('login');
 }
 public function check_login(Request $request){
@@ -151,6 +175,8 @@ if(Auth::attempt(
 return redirect() -> back();
 ;
 }
+
+
 public function logins(){
 return view('logins');
 }
@@ -184,12 +210,14 @@ public function logout(Request $request){
     
 
 }
+// quỳnh 
+// ===========================================================khánh=========================================================
 public function myOrders() {
-    // Lấy tất cả đơn hàng của người dùng hiện tại
-    $orders = Order::where('user_id', Auth::id())->get();
-    $products = Product::all(); // Lấy tất cả sản phẩm
+    $orders = Order::where('user_id', Auth::id())
+    ->where('status', 'Đã xác nhận') 
+    ->get();
 
-    // Khởi tạo biến để tính tổng tiền của tất cả đơn hàng
+    $products = Product::all();
     $grandTotal = 0;
 
     // Tính tổng tiền cho mỗi đơn hàng
@@ -219,7 +247,7 @@ public function myOrders() {
     return view('my_orders', [
         'orders' => $orders,
         'products' => $products,
-        'grandTotal' => $grandTotal, // Truyền biến tổng tiền vào view
+        'grandTotal' => $grandTotal, 
     ]);
 }
 
@@ -235,6 +263,7 @@ public function orderDetails($id) {
         'order_detail' => $order_detail,
     ]);
 }
+// ==========================================================================hết khánh=================================================================================
 public function edit()
 {
     $sliderImage1 = \App\Models\Setting::where('key', 'slider_image_1')->value('value');
@@ -339,6 +368,66 @@ public function updateMedia(Request $request)
         // Thông báo thành công
         return redirect()->route('admin.edit.content')->with('success', 'Cập nhật nội dung thành công!');
     }
+public function confirmOrder($id)
+{
+    $order = Order::findOrFail($id); // Lấy đơn hàng dựa trên ID
+    $orderDetails = json_decode($order->order_detail, true); // Giải mã chi tiết đơn hàng
+    
+    // Lấy thông tin sản phẩm từ bảng products
+    $products = Product::whereIn('id', array_keys($orderDetails))->get();
+    
+    // Trả về view và truyền thông tin đơn hàng và sản phẩm
+    return view('oder.confirm', compact('order', 'orderDetails', 'products'));
+}
 
+
+public function chatUser()
+{
+    $messages = \App\Models\Message::where('user_id', auth()->id())->get();
+    return view('chatuser', compact('messages'));
+}
+
+
+
+public function sendMessage(Request $request)
+{
+    \App\Models\Message::create([
+        'user_id' => auth()->id(),
+        'message' => $request->message,
+        'is_admin' => false,
+    ]);
+
+    return response()->json(['success' => true]);
+}
+
+public function sendAdminMessage(Request $request)
+{
+    \App\Models\Message::create([
+        'admin_id' => auth()->id(),
+        'user_id' => $request->user_id,
+        'message' => $request->message,
+        'is_admin' => true,
+    ]);
+
+    return response()->json(['success' => true]);
+}
+
+public function listUsers()
+{
+    $title = "Danh sách tin nhắn";
+
+    // Lấy danh sách user có tin nhắn và tin nhắn mới nhất
+    $users = \App\Models\User::with('latest_message')->whereHas('messages')->get();
+
+    return view('admin.chat.list_users', compact('users', 'title'));
+}
+
+public function chatWithUser($userId)
+{
+    $title ="Nhắn tin";
+    $messages = \App\Models\Message::where('user_id', $userId)->get();
+    $user = \App\Models\User::findOrFail($userId);
+    return view('admin.chat.chat_with_user', compact('messages', 'user','title'));
+}
 
 }

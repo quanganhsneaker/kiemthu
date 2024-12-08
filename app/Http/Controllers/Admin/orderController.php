@@ -45,7 +45,7 @@ public function confirm_order($id)
 
     return redirect()->route('order.list')->with('success', 'Đơn hàng đã được xác nhận!');
 }
-public function revenueStatistics()
+public function doanhthu()
 {
     $title = 'Thống kê doanh thu';
     // Lấy ngày đầu tiên và ngày cuối cùng của tuần này
@@ -71,20 +71,21 @@ public function revenueStatistics()
     $revenues = [$revenueThisWeek, $revenueLastWeek];
 
     return view('admin.statistics.revenue', [
-           'title' => 'Doanh thu',
+           'title' => 'Thống kê doanh thu',
         'revenues' => json_encode($revenues),
         'labels' => json_encode($labels),
         'revenueThisWeek' => $revenueThisWeek, // Truyền biến này
         'revenueLastWeek' => $revenueLastWeek  // Truyền biến này
     ]);
 }
-
+// ===============================================diệu==================================================================
+// thong ke doanh thu
 private function calculateRevenue($orders)
 {
     $totalRevenue = 0;
 
     foreach ($orders as $order) {
-        // Giải mã chi tiết đơn hàng
+      
         $orderDetails = json_decode($order->order_detail, true);
 
         if (is_array($orderDetails)) {
@@ -103,30 +104,31 @@ private function calculateRevenue($orders)
     return $totalRevenue;
 }
 
+
     //  thống kê đơn hàng
     public function orderStatistics()
     {
         $title ="Thống kê đơn hàng";
         // Lấy tổng số đơn hàng
-        $totalOrders = Order::count();
+        $tong  = Order::count();
     
-        // Lấy số đơn hàng đang chờ xử lý (giả sử status = 0 là đang chờ)
-        $pendingOrders = Order::where('status', '0')->count(); // Sử dụng '0' cho giá trị string
+        // Lấy số đơn hàng chua xasc nhan (giả sử status = 0 là đang chờ)
+        $chuaxacnhan = Order::where('status', '0')->count( ); // Sử dụng '0' cho giá trị string
     
         // Tính số đơn hàng đã xác nhận
-        $processedOrders = $totalOrders - $pendingOrders; // Tổng đơn hàng - Đơn hàng đang chờ
+        $daxacnhan = $tong - $chuaxacnhan; // Tổng đơn hàng - Đơn hàng đang chờ
     
         return view('admin.statistics.orders', [
             'title' => 'Thống kê đơn hàng',
-            'totalOrders' => $totalOrders,
-            'processedOrders' => $processedOrders,
-            'pendingOrders' => $pendingOrders
+            'tong' => $tong,
+            'daxacnhan' => $daxacnhan,
+            'chuaxacnhan' => $chuaxacnhan
         ]);
     }
-    
+    // ==========================================================================================================================================
     public function userStatistics()
     {
-        $title = "Thống kê người dùng";
+        $title = " Người dùng (user)";
     
         // Lấy danh sách người dùng
         $users = User::select('id', 'name', 'email', 'created_at')->get(); // Chỉ lấy các cột cần thiết
@@ -140,6 +142,24 @@ private function calculateRevenue($orders)
             'totalUsers' => $totalUsers // Gửi tổng số người dùng vào view
         ]);
     }
+    public function destroy($id)
+{
+    // Tìm người dùng theo ID
+    $user = User::find($id);
+
+    if (!$user) {
+        return redirect()->back()->with('error', 'Người dùng không tồn tại!');
+    }
+
+    try {
+        // Xóa người dùng
+        $user->delete();
+        return redirect()->back()->with('success', 'Xóa người dùng thành công!');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Đã xảy ra lỗi khi xóa người dùng.');
+    }
+}
+
     
     public function dashboard()
     {

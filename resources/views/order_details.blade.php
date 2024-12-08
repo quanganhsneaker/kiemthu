@@ -84,3 +84,7 @@ p {
         <h3>Tổng Tiền: {{ number_format($product->price_nomal * $quantity) }} <sup>đ</sup></h3>
     </div>
 @endsection
+<div class="noel"> 
+    <img src="https://cdnv2.tgdd.vn/webmwg/2024/ContentMwg/images/noel/2024/tgdd/label-left.png" alt="">
+     <img src="https://cdnv2.tgdd.vn/webmwg/2024/ContentMwg/images/noel/2024/tgdd/label-right.png" alt="">
+       </div>

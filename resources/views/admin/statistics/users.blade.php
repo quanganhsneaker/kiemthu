@@ -17,20 +17,29 @@
                 <th>Tên người dùng</th>
                 <th>Email</th>
                 <th>Ngày tạo tài khoản</th>
+                <th>Hành động</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($users as $user) <!-- Giả sử bạn có danh sách người dùng -->
+            @foreach($users as $user)
             <tr>
                 <td>{{ $user->id }}</td>
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
                 <td>{{ $user->created_at }}</td>
+                <td>
+                    <!-- Nút xóa -->
+                    <form action="{{ route('admin.user.delete', $user->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa người dùng này không?');">
+                        @csrf
+                        @method('DELETE') 
+                        <button type="submit" class="delete-class">Xóa </button>
+                    </form>
+                </td>
             </tr>
             @endforeach
-            <tr> <td colspan="5" style=" text-align:center; font-size:  larger;font-weight: bolder">  Tổng số người dùng: {{ $totalUsers }} </td>
         </tbody>
     </table>
+    
 </div>
 
 <!-- Thêm script để vẽ biểu đồ -->
@@ -78,7 +87,7 @@
         width: 100%; /* Để biểu đồ tự động điều chỉnh chiều rộng */
         height: auto; /* Chiều cao tự động dựa trên chiều rộng */
      
-       margin: 20px auto;
+       margin: 30px auto;
     }
 </style>
 @endsection

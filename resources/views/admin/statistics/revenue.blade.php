@@ -1,5 +1,4 @@
 @extends('admin.main')
-
 @section('content')
 
 <canvas id="revenueChart" width="400" height="200"></canvas>
@@ -35,7 +34,7 @@
     });
 </script>
 
-<div class="revenue-info">
+<div class="revenue-info"> 
     <p>Doanh thu tuần này: {{ number_format($revenueThisWeek, 0, ',', '.') }} VNĐ</p>
 </div>
 <div class="revenue-info">

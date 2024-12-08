@@ -1,11 +1,8 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
     @include('admin.parts.head')
 </head> 
-
 <body>
     <section class="admin">
         <div class="row-grid">
@@ -24,9 +21,6 @@
                     <div class="admin-content-main-content">
                         <!-- nội dung nằm ở đây -->
                         @yield('content')
-
-
-
                     </div>
                 </div>
             </div>
@@ -35,11 +29,6 @@
     <footer>
         @include('admin.parts.footer')
     </footer>
-
     </script>
-   
-
 </body>
-
-
 </html>

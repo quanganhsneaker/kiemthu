@@ -12,7 +12,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * Các thuộc tính có thể gán giá trị.
      *
      * @var array<int, string>
      */
@@ -23,7 +23,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Các thuộc tính ẩn khi serializing.
      *
      * @var array<int, string>
      */
@@ -33,15 +33,25 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * Định nghĩa kiểu dữ liệu cho các thuộc tính.
      *
      * @return array<string, string>
      */
-    protected function casts(): array
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
+    /**
+     * Định nghĩa quan hệ: Một User có nhiều Messages.
+     */
+    public function messages()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasMany(Message::class, 'user_id');
     }
+    public function latest_message()
+{
+    return $this->hasOne(Message::class, 'user_id')->latestOfMany();
+}
+
 }
