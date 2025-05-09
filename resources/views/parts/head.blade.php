@@ -22,4 +22,4 @@
     rel="stylesheet"
 />
 <link rel="stylesheet" href="{{asset('fontend/asset/css/style.css')}}">
-    <title>Laptop</title>   
+    <title>Sneaker</title>   

@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\ComplaintController;
+use App\Http\Controllers\ReviewController;
 use App\Models\Order;
 use App\Models\Product; 
 use App\Http\Controllers\Admin\orderController;
@@ -7,6 +8,8 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\UploadController;
 use App\Http\Controllers\FontendController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+
 // login 
 Route::get('/login',[FontendController::class,'show_login'])->name('login');
 Route::post('/check_login',[FontendController::class,'check_login']);
@@ -83,10 +86,7 @@ Route::get('/info', [FontendController::class,'info']);
 // contact
 Route::get('/contact',function(){return view('contact');});
 // type
-Route::get('/producttype', function () {
-    $products = Product::all();
-    return view('producttype', compact('products'));
-});
+Route::get('/producttype', [ProductController::class, 'productType']);
 // feature 1
 Route::get('/teddyshopf1', [FontendController::class, 'teddyshopf1'])->name('teddyshopf1');
 Route::get('/teddyshopf2', [FontendController::class, 'teddyshopf2'])->name('teddyshopf2');
@@ -96,7 +96,7 @@ Route::get('/search', [ProductController::class, 'ajaxSearch'])->name('ajax.sear
 Route::get('/logins', [FontendController::class, 'logins'])->name('logins'); 
 Route::post('/logins', [FontendController::class, 'postlogins']);   
 Route::get('/register', [FontendController::class, 'register'])->name('register'); 
-Route::post('/register', [FontendController::class, 'postregister']); 
+Route::post('/register', [FontendController::class, 'postregister'])->name('postregister'); 
 Route::get('/logout', [FontendController::class, 'logout'])->name('logout'); 
 // quản lý đơn hàng user
 Route::get('/my-orders', [FontendController::class, 'myOrders'])->name('my.orders');
@@ -107,4 +107,6 @@ Route::post('/send-message', [FontendController::class, 'sendMessage'])->name('s
 Route::post('/send-admin-message', [FontendController::class, 'sendAdminMessage'])->name('send.admin.message');
 Route::get('/admin/chat/list_users', [FontendController::class, 'listUsers'])->name('admin.chat.list_users');
 Route::get('/admin/chat/user/{id}', [FontendController::class, 'chatWithUser'])->name('admin.chat.user');
-
+Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
+Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+Route::get('/product/{id}', [FontendController::class, 'showProduct'])->name('product.show');

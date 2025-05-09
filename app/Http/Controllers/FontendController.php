@@ -22,12 +22,35 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class FontendController extends Controller
 {
     public function index(){
-        $products = product::all();
-       
-        return view("home",[
-            'products' => $products,
+        $products = Product::all(); // Lấy tất cả sản phẩm
+    
+        // Tính điểm trung bình cho mỗi sản phẩm
+        foreach ($products as $product) {
+            // Tính điểm trung bình của sản phẩm này từ bảng reviews
+            $product->averageRating = $product->reviews->avg('rating'); 
+        }
+    
+        return view("home", [
+            'products' => $products, // Truyền sản phẩm vào view
         ]);
+    }
+    
+public function showProduct($id)
+{
+    // Tìm sản phẩm và bao gồm các đánh giá
+    $product = Product::with('reviews')->find($id);
+
+    // Tính điểm trung bình từ các đánh giá
+    $averageRating = $product->reviews->avg('rating'); // Tính điểm trung bình của rating
+
+    // Trả về view và truyền dữ liệu
+    return view('product', [
+        'product' => $product,
+        'averageRating' => $averageRating, // Truyền biến averageRating vào view
+    ]);
 }
+
+    
 public function show_product(Request $request){
     $product = Product::find($request -> id);
     return view('product',[
@@ -121,89 +144,156 @@ public function update_cart(Request $request){
     Session::put('cart',$cart);
     return redirect('/cart');
 }
-public function send_cart(Request $request)
-{
-    // Tạo mã token ngẫu nhiên cho đơn hàng
-    $token = Str::random(12);
+    public function send_cart(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|min:3|max:255|regex:/^[\pL\s]+$/u',
+            'phone' => 'required|string|regex:/^0[0-9]{9}$/',
+            'email' => 'required|email:rfc,dns|max:255',
+            'city' => 'required|string|min:2|max:255',
+            'district' => 'required|string|min:2|max:255',
+            'ward' => 'required|string|min:2|max:255',
+            'address' => 'required|string|min:5|max:500',
+            'note' => 'nullable|string|max:1000',
+            'product_id' => 'required|array|min:1',
+            'product_id.*' => 'required|integer|distinct|exists:products,id',
+        ], [
+            'name.required' => 'Vui lòng nhập họ tên.',
+            'name.min' => 'Họ tên phải có ít nhất 3 ký tự.',
+            'name.regex' => 'Họ tên chỉ được chứa chữ cái và khoảng trắng.',
+            
+            'phone.required' => 'Vui lòng nhập số điện thoại.',
+            'phone.regex' => 'Số điện thoại không đúng định dạng (bắt đầu bằng 0 và có 10 chữ số).',
+        
+            'email.required' => 'Vui lòng nhập email.',
+            'email.email' => 'Email không đúng định dạng.',
+            'email.max' => 'Email quá dài.',
+        
+            'city.required' => 'Vui lòng chọn tỉnh/thành phố.',
+            'city.min' => 'Tên tỉnh/thành phố không hợp lệ.',
+        
+            'district.required' => 'Vui lòng chọn quận/huyện.',
+            'district.min' => 'Tên quận/huyện không hợp lệ.',
+        
+            'ward.required' => 'Vui lòng chọn phường/xã.',
+            'ward.min' => 'Tên phường/xã không hợp lệ.',
+        
+            'address.required' => 'Vui lòng nhập địa chỉ.',
+            'address.min' => 'Địa chỉ phải có ít nhất 5 ký tự.',
+            'address.max' => 'Địa chỉ không được vượt quá 500 ký tự.',
+        
+            'note.max' => 'Ghi chú không được vượt quá 1000 ký tự.',
+        
+            'product_id.required' => 'Giỏ hàng của bạn đang trống.',
+            'product_id.array' => 'Giỏ hàng không hợp lệ.',
+            'product_id.min' => 'Phải có ít nhất một sản phẩm trong giỏ hàng.',
+            'product_id.*.required' => 'Thiếu thông tin sản phẩm.',
+            'product_id.*.integer' => 'ID sản phẩm không hợp lệ.',
+            'product_id.*.distinct' => 'Giỏ hàng chứa sản phẩm bị trùng lặp.',
+            'product_id.*.exists' => 'Một sản phẩm trong giỏ hàng không tồn tại.',
+        ]);
+        
     
-    // Lưu đơn hàng vào cơ sở dữ liệu
-    $order = new Order();
-    $order->name = $request->input('name');
-    $order->phone = $request->input('phone');
-    $order->email = $request->input('email');
-    $order->city = $request->input('city');
-    $order->district = $request->input('district');
-    $order->ward = $request->input('ward');
-    $order->address = $request->input('address');
-    $order->note = $request->input('note');
-    $order_detail = json_encode($request->input('product_id'));
-    $order->order_detail = $order_detail;
-    $order->token = $token;
-    $order->user_id = Auth::id(); // Gán ID người dùng hiện tại
-    $order->save();
+        // Tạo mã token ngẫu nhiên cho đơn hàng
+        $token = Str::random(12);
+        
+        // Lưu đơn hàng vào cơ sở dữ liệu
+        $order = new Order();
+        $order->name = $request->input('name');
+        $order->phone = $request->input('phone');
+        $order->email = $request->input('email');
+        $order->city = $request->input('city');
+        $order->district = $request->input('district');
+        $order->ward = $request->input('ward');
+        $order->address = $request->input('address');
+        $order->note = $request->input('note');
+        $order_detail = json_encode($request->input('product_id'));
+        $order->order_detail = $order_detail;
+        $order->token = $token;
+        $order->user_id = Auth::id(); // Gán ID người dùng hiện tại
+        $order->save();
 
-    // Xóa giỏ hàng sau khi gửi đơn
-    Session::forget('cart');
+        // Xóa giỏ hàng sau khi gửi đơn
+        Session::forget('cart');
 
-    // Gửi email xác nhận cho khách hàng (tuỳ chỉnh theo logic của bạn)
-    Mail::to($order->email)->send(new TestMail($order->name));
+        // Gửi email xác nhận cho khách hàng (tuỳ chỉnh theo logic của bạn)
+        Mail::to($order->email)->send(new TestMail($order->name));
 
-    // Gửi thông báo
-    Notification::send($order, new EmailNotification($order));
+        // Gửi thông báo
+        Notification::send($order, new EmailNotification($order));
 
-    // Chuyển hướng đến trang xác nhận với ID đơn hàng
-    return redirect()->route('oder.confirm', ['id' => $order->id]);
-}
+        // Chuyển hướng đến trang xác nhận với ID đơn hàng
+        return redirect()->route('oder.confirm', ['id' => $order->id]);
+    }
 // ================================================================quỳnh=======================================
 
 public function show_login(){
 
     return view('login');
 }
-public function check_login(Request $request){
-if(Auth::attempt(
-    [
-        'email'=> $request -> input('email'),
-        'password'=> $request -> input('password')
-    ]
-))
-
+public function check_login(Request $request)
 {
-    return redirect('admin');
+    if (Auth::attempt([
+        'email' => $request->input('email'),
+        'password' => $request->input('password')
+    ])) {
+        // Kiểm tra nếu người dùng có id là 1 (admin)
+        if (Auth::user()->id == 1) {
+            return redirect()->route('admin.home'); // Sử dụng route thay vì URL trực tiếp
+        }
+
+        // Đăng xuất nếu không phải id = 1
+        Auth::logout();
+        return redirect()->back()->withErrors(['error' => 'Chỉ tài khoản admin được phép truy cập.']);
+    }
+
+    // Trả lại nếu thông tin đăng nhập không đúng
+    return redirect()->back()->withErrors(['error' => 'Email hoặc mật khẩu không đúng.']);
 }
 
-return redirect() -> back();
-;
-}
 
 
 public function logins(){
 return view('logins');
 }
-public function register(){
-return view('register');
+public function register()
+{
+    return view('register'); // Trả về view 'register'
 }
-public function postregister(Request $request){
 
-$request -> merge(['password' =>Hash::make($request-> password)]);
+public function postregister(Request $request)
+{
+    // Xác thực dữ liệu đầu vào
+    $validated = $request->validate([
+        'name' => 'required|string|max:255|min:3', // Tên yêu cầu tối thiểu 3 ký tự
+        'email' => 'required|email|unique:users,email|max:255', // Email yêu cầu định dạng hợp lệ và phải duy nhất
+        'password' => 'required|string|min:8|confirmed', // Mật khẩu yêu cầu ít nhất 8 ký tự và xác nhận mật khẩu phải giống
+        'password_confirmation' => 'required|same:password', // Xác nhận mật khẩu phải trùng với mật khẩu
+    ]);
 
-try {
+    // Mã hóa mật khẩu trước khi lưu vào cơ sở dữ liệu
+    $validated['password'] = Hash::make($request->password);
 
-User::create($request->all());
-} catch (\Throwable $th) {
-    dd($th);
-   
-}
-return redirect()-> route('logins');
-}
-public function postlogins(Request $request){
-    if(Auth::attempt(['email' => $request-> email, 'password' => $request-> password])){
-        return redirect()-> route('index');
-    }else{
-        return redirect()-> back();
+    try {
+        // Tạo người dùng mới trong bảng 'users'
+        User::create($validated);
+
+        // Chuyển hướng người dùng đến trang đăng nhập với thông báo thành công
+        return redirect()->route('logins')->with('success', 'Đăng ký thành công!');
+    } catch (\Throwable $th) {
+        // Nếu có lỗi trong quá trình lưu người dùng, dừng lại và in lỗi
+        dd($th); // In lỗi (thường dùng trong môi trường phát triển)
     }
-
 }
+public function postlogins(Request $request)
+{
+    if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        return redirect()->route('index');
+    } else {
+        return redirect()->back()->with('error', 'Lỗi: Thông tin đăng nhập không khớp. Vui lòng thử lại hoặc đăng ký.');
+    }
+}
+
 public function logout(Request $request){
     Auth::logout();
         return redirect()-> back();
@@ -391,13 +481,20 @@ public function chatUser()
 
 public function sendMessage(Request $request)
 {
-    \App\Models\Message::create([
-        'user_id' => auth()->id(),
-        'message' => $request->message,
-        'is_admin' => false,
-    ]);
+    try {
+        \App\Models\Message::create([
+            'user_id' => auth()->id(),
+            'message' => $request->message,
+            'is_admin' => false,
+        ]);
 
-    return response()->json(['success' => true]);
+        return response()->json(['success' => true]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'error' => 'Gửi tin nhắn thất bại. Vui lòng thử lại.'
+        ]);
+    }
 }
 
 public function sendAdminMessage(Request $request)

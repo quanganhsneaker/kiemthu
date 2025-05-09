@@ -99,15 +99,25 @@
     </style>
 </head>
 <body>
-
     <div class="container">
         <h2>Đăng nhập</h2>
+
+        <!-- Hiển thị thông báo thành công -->
         @if (session('success'))
-            <p>{{ session('success') }}</p>
+            <p style="color: green;">{{ session('success') }}</p>
         @endif
+
+        <!-- Hiển thị thông báo lỗi -->
+        @if (session('error'))
+            <p style="color: red;">{{ session('error') }}</p>
+        @endif
+
+        <!-- Hiển thị lỗi xác thực (nếu có) -->
         @if ($errors->any())
-            <p>{{ $errors->first() }}</p>
+            <p style="color: red;">{{ $errors->first() }}</p>
         @endif
+
+        <!-- Form đăng nhập -->
         <form method="POST" action="{{ route('logins') }}">
             @csrf
             <div class="form-group">
@@ -119,9 +129,9 @@
                 <input type="password" id="password" name="password" required>
             </div>
             <button type="submit">Đăng nhập</button>
-            <a href="{{ route('register') }}"> Đăng ký</a>
+            <a href="{{ route('register') }}">Đăng ký</a>
         </form>
     </div>
-
 </body>
+
 </html>

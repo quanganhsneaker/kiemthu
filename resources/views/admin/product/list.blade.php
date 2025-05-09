@@ -256,7 +256,7 @@
 @section('footer')
 <script>
   function removeRow(product_id, url) {
-    if (confirm('Mày chắc xoá chưa ?')) {
+    if (confirm('Bạn chắc xóa không ?')) {
       $.ajax({
         url: url,
         data: { product_id },

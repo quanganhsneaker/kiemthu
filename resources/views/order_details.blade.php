@@ -2,89 +2,110 @@
 
 @section('content')
 <style>
-    
-    .container123 {
-    max-width: 800px; /* Giới hạn chiều rộng */
-    margin: 20px auto; /* Canh giữa */
-    padding: 20px;
-    border: 1px solid #ddd; /* Viền nhẹ xung quanh */
-    border-radius: 8px; /* Bo tròn góc */
-    background-color: #f9f9f9; /* Màu nền sáng */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
-   
+    h2 {
+        text-align: center;
+        color: #333;
+    }
+    .top{
+        margin-top: 100px;
+    }
+/* Căn chỉnh chung cho form */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Khoảng cách giữa các phần tử */
+    width: 100%;
+    max-width: 600px;
+  
 }
+    .product-review {
+        margin-top: 10px;
+    }
 
-h2 {
-    text-align: center; /* Căn giữa tiêu đề */
-    color: #333; /* Màu chữ */
-}
-
-h3 {
-    margin-top: 20px; /* Khoảng cách trên tiêu đề sản phẩm */
-    color: #555; /* Màu chữ nhạt hơn */
-}
-
-ul {
-    list-style-type: none; /* Bỏ kiểu đánh số */
-    padding: 0; /* Bỏ padding */
-}
-
-li {
-    padding: 10px; /* Khoảng cách giữa các mục */
-    border-bottom: 1px solid #eee; /* Viền dưới giữa các sản phẩm */
-}
-
-li:last-child {
-    border-bottom: none; /* Bỏ viền dưới cho mục cuối */
-}
-
-p {
-    margin: 5px 0; /* Khoảng cách giữa các đoạn văn */
-    color: #666; /* Màu chữ nhạt */
-}
-
-.sup {
-    font-size: 0.8em; /* Kích thước chữ nhỏ cho ký hiệu */
-    vertical-align: super; /* Căn chỉnh lên trên */
-}
-
-.total {
-    font-weight: bold; /* Làm đậm tổng tiền */
-    color: #d9534f; /* Màu chữ cho tổng tiền */
-    font-size: 1.2em; /* Kích thước chữ lớn hơn */
-}
-
+    .product-review p {
+        font-weight: bold;
+        margin: 5px 0;
+    }
 </style>
-    <div class="container123  ">
-        <h2>Chi Tiết Đơn Hàng #{{ $order->id }}</h2>
-        <p>Tên Người Nhận: {{ $order->name }}</p>
-        <p>Điện Thoại: {{ $order->phone }}</p>
-        <p>Email: {{ $order->email }}</p>
-        <p>Địa Chỉ: {{ $order->city }}, {{ $order->district }}, {{ $order->ward }}</p>
-        <h3>Sản Phẩm:</h3>
-        <ul>
-          
-            @foreach ($order_detail as $product_id => $quantity)
-            
-                @php
-                    // Tìm sản phẩm trong danh sách $products
-                    $product = $products->firstWhere('id', $product_id);
-                @endphp
-                
-                <li>
-                    @if ($product)
-                    <img style="width: 70px;" src="{{asset($product -> image)}}" alt=""style="width: 100px; height: auto;"> -Tên: {{ $product->name }} - Số lượng: {{ $quantity }} 
+
+<div class="container123 top">
+    <h2>Chi Tiết Đơn Hàng #{{ $order->id }}</h2>
+    <p>Tên Người Nhận: {{ $order->name }}</p>
+    <p>Điện Thoại: {{ $order->phone }}</p>
+    <p>Email: {{ $order->email }}</p>
+    <p>Địa Chỉ: {{ $order->city }}, {{ $order->district }}, {{ $order->ward }}</p>
+    
+    <h3>Sản Phẩm:</h3>
+    <ul>
+        @foreach ($order_detail as $product_id => $quantity)
+            @php
+                $product = $products->firstWhere('id', $product_id);
+                $product_reviews = $reviews[$product_id] ?? collect();
+            @endphp
+            <li>
+                @if ($product)
+                    <img style="width: 70px;" src="{{ asset($product->image) }}" alt="">
+                    Tên: {{ $product->name }} - Số lượng: {{ $quantity }}
+                    {{-- @auth
+                        @php
+                            // Tìm đánh giá của người dùng hiện tại cho sản phẩm này trong đơn hàng
+                            $user_review = $product_reviews->firstWhere('user_id', auth()->id());
+                        @endphp
                         
-                    @else
-                        Sản phẩm không tìm thấy.
-                    @endif
-                </li>
-            @endforeach
-        </ul>
-        <h3>Tổng Tiền: {{ number_format($product->price_nomal * $quantity) }} <sup>đ</sup></h3>
+                        @if (!$user_review)
+                           
+                            <form method="POST" action="{{ route('reviews.store') }}">
+                                @csrf
+                                <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                
+                                <div class="rating-container">
+                                    <label for="rating" class="rating-label">Đánh giá:</label>
+                                    <div class="star-rating">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <input type="radio" id="star{{ $i }}" name="rating" value="{{ $i }}">
+                                            <label for="star{{ $i }}">&#9733;</label>
+                                        @endfor
+                                    </div>
+                                </div>
+                            
+                                <div class="comment-container">
+                                    <label for="comment" class="comment-label">Nhận xét:</label>
+                                    <textarea name="comment" id="comment" rows="2"></textarea>
+                                </div>
+                            
+                                <div class="submit-button">
+                                    <button class="main-btn" type="submit">Gửi đánh giá</button>
+                                </div>
+                            </form>
+                            
+                        @else
+                       
+                            <p>Bạn đã đánh giá sản phẩm này trong đơn hàng này. Cảm ơn bạn!</p>
+                        @endif
+                    @endauth --}}
+                @else
+                    Sản phẩm không tìm thấy.
+                @endif
+            </li>
+        @endforeach
+    </ul>
+
+    {{-- <h3>Tổng Tiền: {{ number_format(array_sum(array_map(fn($id, $quantity) => $products->firstWhere('id', $id)->price_nomal * $quantity, array_keys($order_detail), $order_detail))) }} <sup>đ</sup></h3> --}}
+    <a href="/my-orders"><button class="thoat">Thoát</button></a>
+</div>
+
+@if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
     </div>
+@endif
+
+@if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 @endsection
-<div class="noel"> 
-    <img src="https://cdnv2.tgdd.vn/webmwg/2024/ContentMwg/images/noel/2024/tgdd/label-left.png" alt="">
-     <img src="https://cdnv2.tgdd.vn/webmwg/2024/ContentMwg/images/noel/2024/tgdd/label-right.png" alt="">
-       </div>
+

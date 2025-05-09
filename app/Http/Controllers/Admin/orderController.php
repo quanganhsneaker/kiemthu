@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Review;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -45,6 +46,7 @@ public function confirm_order($id)
 
     return redirect()->route('order.list')->with('success', 'Đơn hàng đã được xác nhận!');
 }
+// ===============================================diệu==================================================================
 public function doanhthu()
 {
     $title = 'Thống kê doanh thu';
@@ -78,8 +80,8 @@ public function doanhthu()
         'revenueLastWeek' => $revenueLastWeek  // Truyền biến này
     ]);
 }
-// ===============================================diệu==================================================================
-// thong ke doanh thu
+
+// tính 
 private function calculateRevenue($orders)
 {
     $totalRevenue = 0;
@@ -130,8 +132,10 @@ private function calculateRevenue($orders)
     {
         $title = " Người dùng (user)";
     
-        // Lấy danh sách người dùng
-        $users = User::select('id', 'name', 'email', 'created_at')->get(); // Chỉ lấy các cột cần thiết
+        // Lấy danh sách người dùng trừ người có id = 1
+        $users = User::select('id', 'name', 'email', 'created_at')
+                     ->where('id', '!=', 1) // Loại bỏ người dùng có id = 1
+                     ->get();
     
         // Tính tổng số người dùng
         $totalUsers = $users->count(); // Đếm tổng số người dùng
@@ -142,6 +146,7 @@ private function calculateRevenue($orders)
             'totalUsers' => $totalUsers // Gửi tổng số người dùng vào view
         ]);
     }
+    
     public function destroy($id)
 {
     // Tìm người dùng theo ID
@@ -175,6 +180,6 @@ private function calculateRevenue($orders)
             'totalUsers' => $totalUsers, // Truyền tổng số người dùng vào view
         ]);
     }
-    
+ 
     
 }

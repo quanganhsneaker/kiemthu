@@ -7,7 +7,13 @@
         @csrf
     </form>
 </div>
-
+@if ($errors->any())
+    <div class="error-message">
+        @foreach ($errors->all() as $error)
+            <p>{{ $error }}</p>
+        @endforeach
+    </div>
+@endif
 <style>
     /* CSS cho nền trang */
     body {
@@ -21,7 +27,14 @@
     h1{
         color: white;
     }
-
+    .error-message {
+        background-color: #f8d7da;
+        color: #842029;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #f5c2c7;
+        border-radius: 5px;
+    }
     /* CSS căn giữa cho form đăng nhập */
     .container {
         display: flex;
@@ -29,7 +42,6 @@
         justify-content: center;
         height: 100%; /* Căn giữa theo chiều dọc */
     }
-
     .login-form {
         width: 100%;
         max-width: 400px;
@@ -40,7 +52,6 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
         text-align: center;
     }
-
     .login-form .form-input {
         width: 100%;
         padding: 12px;
@@ -73,5 +84,4 @@
     background-color: #ddd; /* Đổi màu khi hover */
     border-color: #3C3C3C; /* Đổi màu viền khi hover (tuỳ chọn) */
 }
-
 </style>

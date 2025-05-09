@@ -44,9 +44,7 @@
             text-decoration: none; /* Bỏ gạch chân */
         }
 
-        a:hover {
-            text-decoration: underline; /* Gạch chân liên kết khi hover */
-        }
+       
     </style>
 
 <section class="container123">

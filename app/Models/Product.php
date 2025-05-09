@@ -10,4 +10,10 @@ class Product extends Model
     use HasFactory;
     protected $table = 'products'; // Tên bảng trong cơ sở dữ liệu
     protected $fillable = ['name', 'material', 'image']; // Các cột có thể truy cập
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+    
+
 }

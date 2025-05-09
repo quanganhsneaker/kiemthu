@@ -7,6 +7,15 @@
         <!-- Form cập nhật giỏ hàng -->
         @if (Auth::check())
         <form action="/cart/send" method="post">
+            @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul style="color: red; list-style: none; padding: 0;">
+                @foreach ($errors->all() as $error)
+                    <li>• {{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
             <div class="container">
                 <div class="row-flex row-flex-product-detail">
                     <p style="font-size: x-large;">Giỏ Hàng</p>

@@ -84,26 +84,53 @@
 <body>
     <div class="container">
         <h2>Đăng ký</h2>
+
+        <!-- Hiển thị thông báo lỗi cho từng trường -->
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <!-- Hiển thị thông báo thành công -->
         @if (session('success'))
             <p>{{ session('success') }}</p>
         @endif
-        <form method="POST" action="{{ route('register') }}">
+
+        <!-- Form đăng ký -->
+        <form method="POST" action="{{ route('postregister') }}">
             @csrf
             <div class="form-group">
                 <label for="name">Tên</label>
-                <input type="text" id="name" name="name" required>
+                <input type="text" id="name" name="name" value="{{ old('name') }}" required>
+                @error('name')
+                    <p style="color: red;">{{ $message }}</p> <!-- Hiển thị lỗi nếu có -->
+                @enderror
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
+                <input type="email" id="email" name="email" value="{{ old('email') }}" required>
+                @error('email')
+                    <p style="color: red;">{{ $message }}</p> <!-- Hiển thị lỗi nếu có -->
+                @enderror
             </div>
             <div class="form-group">
                 <label for="password">Mật khẩu</label>
                 <input type="password" id="password" name="password" required>
+                @error('password')
+                    <p style="color: red;">{{ $message }}</p> <!-- Hiển thị lỗi nếu có -->
+                @enderror
             </div>
             <div class="form-group">
                 <label for="password_confirmation">Xác nhận mật khẩu</label>
                 <input type="password" id="password_confirmation" name="password_confirmation" required>
+                @error('password_confirmation')
+                    <p style="color: red;">{{ $message }}</p> <!-- Hiển thị lỗi nếu có -->
+                @enderror
             </div>
             <button type="submit">Đăng ký</button>
             <p> Bằng việc đăng ký, bạn đã chấp nhận các chính sách của chúng tôi</p>

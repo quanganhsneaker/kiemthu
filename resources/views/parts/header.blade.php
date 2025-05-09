@@ -5,9 +5,15 @@
                 <i class="ri-menu-line"></i>
             </div>
             <div class="header-logo">
-                <a href="/"> <img src="{{asset('fontend/asset/images/logotron.png')}}" alt=""> </a>
-            
+                <a href="/">
+                    <div class="logo-container">
+                        <img src="{{asset('fontend/asset/images/logotron.png')}}" alt="Logo" class="logo">
+                        <img  src="{{asset('fontend/asset/images/munoellll.png')}}" alt="Mũ Noel" class="hat">
+                    </div>
+                </a>
             </div>
+            
+            
             <div class="header-logo-mobile">
                 <img src="{{asset('fontend/asset/images/logotron.png')}}" alt=""> 
             </div>
@@ -26,13 +32,16 @@
                 <input type="text" id="search-query" placeholder="Tìm kiếm" onkeyup="searchProducts()" required>
                 <div id="search-results" class="search-results"></div>
             </div>
-            
-            <!-- Hiển thị giỏ hàng -->
+       
+        
+
             @if (Auth::check())
             <div class="header-chat">
-                <a href="{{ route('chatuser') }}">
-                    <i class="ri-message-2-fill" style="font-size: 25px"></i>  
+                <a href="chatuser">
+                    <i class="ri-messenger-line"></i>
+                   
                 </a>
+              
             </div>
             <div class="header-cart">
                 <a href="{{ route('show_cart') }}">

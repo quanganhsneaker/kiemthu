@@ -29,12 +29,12 @@
     <!-- ============ Product Sections ============== -->
     <div class="container1">
         <a href="/producttype">
-          <img src="https://cdnv2.tgdd.vn/mwg-static/common/Category/66/cf/66cfa8d199a3a2f0757941d8149971d8.png" alt="">
-         <img src="https://cdnv2.tgdd.vn/mwg-static/common/Category/93/b6/93b61bcd1237eb7871ba30a003e2352e.png" alt="">
-         <img src="https://cdnv2.tgdd.vn/mwg-static/common/Category/5e/8e/5e8e0225b7f45864fb8c4dbf7b151533.png" alt="">
-         <img src="https://cdnv2.tgdd.vn/mwg-static/common/Category/7b/25/7b256aa49ccc53d2fafc71aeff1da981.png" alt="">
-         <img src="https://cdnv2.tgdd.vn/mwg-static/common/Category/44/10/4410b95393b8e2be4065f181932cf3b9.png" alt="">
-         <img src="https://cdnv2.tgdd.vn/mwg-static/common/Category/16/20/1620a7d46f9bd765e33d9e291567e90a.png" alt="">
+          <img src="{{asset('backend/asset/images/nike1.png')}}" alt="">
+         <img src="{{asset('backend/asset/images/adidas3.png')}}" alt="">   
+         <img src="{{asset('backend/asset/images/lv.jpg')}}" alt="">
+         <img src="{{asset('backend/asset/images/van.png')}}" alt="">
+         <img src="{{asset('backend/asset/images/puma.png')}}" alt="">
+         <img src="{{asset('backend/asset/images/mlb1.png')}}" alt="">
          </a>
          
       </div>
@@ -47,7 +47,7 @@
         <div class="container">
             <!-- Phần hiển thị sản phẩm theo danh mục -->
             @php
-         $categories = ['hot' => 'Sản Phẩm Bán Chạy', 'dell' => 'DELL', 'macbook' => 'MACBOOK',  'acer' => 'ACER','accessory' => 'Phụ Kiện ','asus' => "Asus",'hp' => 'Hp','lenovo' => 'Lenovo'];
+         $categories = ['hot' => 'Sản Phẩm Bán Chạy', 'dell' => 'Adidas', 'macbook' => 'Nike',  'acer' => 'mlb','accessory' => 'Phụ Kiện ','asus' => "Jodan",'hp' => 'LV','lenovo' => 'Gucci'];
             @endphp
 
             @foreach ($categories as $category => $title)
@@ -67,9 +67,26 @@
                                         <p><a href="/product/{{$product->id}}">{{ $product->name }}</a></p>
                                     </div>
                                     <div class="rating">
-                                        <img style="height: 17px; width: 18px;" src="{{ asset('fontend/asset/images/Star 6.svg') }}" alt="">
-                                        <span style="color: orange;" class="value">4.9</span>
+                                        <!-- Hiển thị các sao sáng dựa trên điểm trung bình của sản phẩm -->
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            @if ($i <= floor($product->averageRating)) 
+                                                <!-- Hiển thị sao sáng nếu chỉ số sao nhỏ hơn hoặc bằng điểm trung bình -->
+                                                <img src="{{ asset('fontend/asset/images/Star 6.svg') }}" alt="star" 
+                                                    style="height: 17px; width: 18px; filter: brightness(1.5);"/>
+                                            @elseif ($i == ceil($product->averageRating) && $product->averageRating > floor($product->averageRating)) 
+                                                <!-- Hiển thị sao sáng một phần nếu có phần thập phân trong điểm trung bình -->
+                                                <img src="{{ asset('fontend/asset/images/Star 6.svg') }}" alt="star" 
+                                                    style="height: 17px; width: 18px; filter: brightness(1.2);"/>
+                                            @else
+                                                <!-- Không hiển thị sao nếu điểm trung bình không đủ -->
+                                                <span style="display: none;"></span>
+                                            @endif
+                                        @endfor
+                                    
+                                        <!-- Hiển thị số điểm trung bình của sản phẩm -->
+                                        <span style="color: orange;" class="value">{{ number_format($product->averageRating, 1) }}</span>
                                     </div>
+                            
                                 </div>
                                 <span>{{ $product->material }}</span>
                                 <div class="product-item-price">

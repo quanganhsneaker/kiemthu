@@ -20,7 +20,6 @@
          </div>
       </div>
    </div>
-
    <!-- Feature 2 -->
    <div class="features features-2nd">
       <div class="main-content">
@@ -36,7 +35,6 @@
          </div>
       </div>
    </div>
-
    <!-- Feature 3 -->
    <div class="features features-2nd">
       <div class="main-content">
